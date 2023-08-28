@@ -1,9 +1,10 @@
 //vpost-2
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:vpost_2/responses/mobile_screen_layout.dart';
-import 'package:vpost_2/responses/responsive_layout.dart';
-import 'package:vpost_2/responses/web_layout.dart';
+//import 'package:vpost_2/responses/mobile_screen_layout.dart';
+//import 'package:vpost_2/responses/responsive_layout.dart';
+//import 'package:vpost_2/responses/web_layout.dart';
+import 'package:vpost_2/screens/login.dart';
 import 'package:vpost_2/utils/colors.dart';
 
 void main() async {
@@ -24,10 +25,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: mobileBackgroundColor,
       ),
-      home: const ResponsiveLayout(
-          webScreenLayout: WebScreenLayout(),
-          mobileScreenLayout: MobileScreenLayout(),
-          ),
+
+      home: const LoginScreen(),
     );
   }
 }
