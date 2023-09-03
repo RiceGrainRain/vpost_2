@@ -128,7 +128,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   password: _passwordController.text.trim(),
                   firstName: _firstNameController.text.trim(),
                   lastName: _lastNameController.text.trim(),
-                  Age: _ageController.text.trim(),
+                  userAge: _ageController.text.trim(),
                   confirmPassword: _confirmPasswordController.text.trim());
               print(res);
             },

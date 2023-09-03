@@ -12,7 +12,7 @@ class AuthMethods {
       required String password,
       required String firstName,
       required String lastName,
-      required String Age,
+      required String userAge,
       required String confirmPassword}) async {
     String res = "Some error occurred";
     try {
@@ -21,7 +21,7 @@ class AuthMethods {
           password.isEmpty ||
           firstName.isEmpty ||
           lastName.isEmpty ||
-          Age.isEmpty ||
+          userAge.isEmpty ||
           confirmPassword == password) {
         UserCredential cred = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
@@ -31,7 +31,7 @@ class AuthMethods {
           'displayName': "$firstName $lastName",
           "uid": cred.user!.uid,
           "email": email,
-          'Age': Age,
+          'Age': userAge,
         });
       }
     } catch (err) {
