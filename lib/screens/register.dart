@@ -22,6 +22,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _confirmPasswordController =
       TextEditingController();
   Uint8List? _image;
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -39,6 +40,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
     setState(() {
       _image = im;
     });
+  }
+
+  void signUpUser() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String res = await AuthMethods().signUpUser(
+      email: _emailController.text.trim(),
+      password: _passwordController.text.trim(),
+      firstName: _firstNameController.text.trim(),
+      lastName: _lastNameController.text.trim(),
+      userAge: _ageController.text.trim(),
+      confirmPassword: _confirmPasswordController.text.trim(),
+      file: _image!,
+    );
+
+    setState(
+      () {
+        _isLoading = false;
+      },
+    );
+
+    if (res != 'success') {
+      showSnackBar(res, context);
+    }
   }
 
   @override
@@ -154,18 +180,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
           //Register
           InkWell(
-            onTap: () async {
-              String res = await AuthMethods().signUpUser(
-                  email: _emailController.text.trim(),
-                  password: _passwordController.text.trim(),
-                  firstName: _firstNameController.text.trim(),
-                  lastName: _lastNameController.text.trim(),
-                  userAge: _ageController.text.trim(),
-                  confirmPassword: _confirmPasswordController.text.trim(),
-                  file: _image!,
-                  );
-              print(res);
-            },
+            onTap: signUpUser,
             child: Container(
               alignment: Alignment.center,
               width: double.infinity,
@@ -175,10 +190,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     borderRadius: BorderRadius.all(Radius.circular(4))),
                 color: greenColor,
               ),
-              child: const Text(
-                "Register",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
+              child: _isLoading
+                  ? const Center(
+                      child: CircularProgressIndicator(
+                        color: primaryColor,
+                      ),
+                    )
+                  : const Text(
+                      "Register",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
             ),
           ),
 
@@ -200,7 +221,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   child: const Text(
                     "Login Now",
                     style: TextStyle(
-                        fontWeight: FontWeight.bold, color: blueColor),
+                        fontWeight: FontWeight.bold,),
                   ),
                 ),
               )
