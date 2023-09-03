@@ -16,7 +16,7 @@ class AddPostScreen extends StatefulWidget {
 
 class _AddPostScreenState extends State<AddPostScreen> {
   Uint8List? _file;
-
+  final TextEditingController _descriptionController = TextEditingController();
   _selectImage(BuildContext context) async {
     return showDialog(
         context: context,
@@ -42,6 +42,13 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   setState(() {
                     _file = file;
                   });
+                },
+              ),
+              SimpleDialogOption(
+                padding: const EdgeInsets.all(20),
+                child: const Text('Cancel'),
+                onPressed: () {
+                  Navigator.of(context).pop();
                 },
               ),
             ],
@@ -92,8 +99,9 @@ class _AddPostScreenState extends State<AddPostScreen> {
                     ),
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.3,
-                      child: const TextField(
-                        decoration: InputDecoration(
+                      child: TextField(
+                        controller: _descriptionController,
+                        decoration: const InputDecoration(
                           hintText: 'Give a description...',
                           border: InputBorder.none,
                         ),
