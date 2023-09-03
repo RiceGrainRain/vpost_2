@@ -31,7 +31,7 @@ class AuthMethods {
           'displayName': "$firstName $lastName",
           "uid": cred.user!.uid,
           "email": email,
-          'Age': userAge,
+          'userAge': userAge,
         });
       }
     } catch (err) {
