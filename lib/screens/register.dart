@@ -1,3 +1,6 @@
+import 'dart:typed_data';
+import 'package:image_picker/image_picker.dart';
+import 'package:vpost_2/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:vpost_2/resources/auth_methods.dart';
 import 'package:vpost_2/utils/colors.dart';
@@ -16,8 +19,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _ageController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
+  final TextEditingController _confirmPasswordController =TextEditingController();
+  Uint8List? _image;
 
   @override
   void dispose() {
@@ -29,6 +32,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
     _ageController.dispose();
     _confirmPasswordController.dispose();
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -51,12 +56,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 fontWeight: FontWeight.bold,
               )),
 
-          const SizedBox(height: 10),
-          const Text(
-            "Regster below with your details!",
+          const SizedBox(height: 40),
+
+          Stack(
+            children: [
+              const CircleAvatar(radius: 64, backgroundImage: NetworkImage("https://static01.nyt.com/images/2023/06/06/science/06tb-croc/06tb-croc-videoSixteenByNine3000.jpg")),
+              Positioned(
+                bottom: -10,
+                left: 80,
+                child: IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.add_a_photo),
+                ),
+              ),
+            ],
           ),
 
-          const SizedBox(height: 40),
+          const SizedBox(
+            height: 20,
+          ),
 
           TextFieldInput(
               textEditingController: _firstNameController,
@@ -114,7 +132,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
             textInputType: TextInputType.text,
             isPass: true,
           ),
-
 
           const SizedBox(
             height: 20,

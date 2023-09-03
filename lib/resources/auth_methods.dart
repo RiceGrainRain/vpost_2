@@ -33,6 +33,8 @@ class AuthMethods {
           "email": email,
           'userAge': userAge,
         });
+
+        res = "success";
       }
     } catch (err) {
       res = err.toString();
