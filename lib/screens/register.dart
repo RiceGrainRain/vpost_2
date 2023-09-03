@@ -19,7 +19,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _ageController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
   Uint8List? _image;
 
   @override
@@ -33,7 +34,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
     _confirmPasswordController.dispose();
   }
 
-
+  void selectImage() async {
+    Uint8List im = await pickImage(ImageSource.gallery);
+    setState(() {
+      _image = im;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +66,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
           Stack(
             children: [
-              const CircleAvatar(radius: 64, backgroundImage: NetworkImage("https://static01.nyt.com/images/2023/06/06/science/06tb-croc/06tb-croc-videoSixteenByNine3000.jpg")),
+              _image != null
+                  ? CircleAvatar(
+                      radius: 64,
+                      backgroundImage: MemoryImage(_image!),
+                    )
+                  : const CircleAvatar(
+                      radius: 64,
+                      backgroundImage:
+                          NetworkImage("https://i.stack.imgur.com/l60Hf.png"),
+                    ),
               Positioned(
                 bottom: -10,
                 left: 80,
@@ -146,7 +161,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   firstName: _firstNameController.text.trim(),
                   lastName: _lastNameController.text.trim(),
                   userAge: _ageController.text.trim(),
-                  confirmPassword: _confirmPasswordController.text.trim());
+                  confirmPassword: _confirmPasswordController.text.trim(),
+                  file: _image!,
+                  );
               print(res);
             },
             child: Container(

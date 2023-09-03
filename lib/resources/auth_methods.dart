@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -13,7 +15,9 @@ class AuthMethods {
       required String firstName,
       required String lastName,
       required String userAge,
-      required String confirmPassword}) async {
+      required String confirmPassword,
+      required Uint8List file,
+      }) async {
     String res = "Some error occurred";
     try {
       //register
