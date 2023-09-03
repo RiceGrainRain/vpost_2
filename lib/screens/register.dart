@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'package:image_picker/image_picker.dart';
+import 'package:vpost_2/screens/login.dart';
 import 'package:vpost_2/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:vpost_2/resources/auth_methods.dart';
@@ -65,6 +66,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (res != 'success') {
       showSnackBar(res, context);
     }
+  }
+
+    void navigateToLogin() {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const LoginScreen()));
   }
 
   @override
@@ -215,7 +220,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 child: const Text("Have an account already?"),
               ),
-              InkWell(
+              GestureDetector(
+                onTap: navigateToLogin,
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   child: const Text(

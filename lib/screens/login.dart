@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vpost_2/resources/auth_methods.dart';
+import 'package:vpost_2/screens/register.dart';
 import 'package:vpost_2/utils/colors.dart';
 import 'package:vpost_2/utils/utils.dart';
 import 'package:vpost_2/widgets/text_field.dart';
@@ -37,6 +38,10 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       _isLoading = false;
     });
+  }
+
+  void navigateToRegister() {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const RegisterScreen()));
   }
 
   @override
@@ -120,7 +125,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         padding: const EdgeInsets.symmetric(vertical: 8),
                         child: const Text("Don't have an account?"),
                       ),
-                      InkWell(
+                      GestureDetector(
+                        onTap: navigateToRegister,
                         child: Container(
                           padding: const EdgeInsets.symmetric(vertical: 8),
                           child: const Text(
