@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:vpost_2/models/user.dart';
 import 'package:vpost_2/providers/user_provider.dart';
+import 'package:vpost_2/resources/firestore_methods.dart';
 import 'package:vpost_2/utils/colors.dart';
 import 'package:vpost_2/utils/utils.dart';
 
@@ -17,6 +18,27 @@ class AddPostScreen extends StatefulWidget {
 class _AddPostScreenState extends State<AddPostScreen> {
   Uint8List? _file;
   final TextEditingController _descriptionController = TextEditingController();
+
+  void postImage(
+    String uid,
+    String displayName,
+    String profImage,
+  ) async {
+    try {
+      String res = await FireStoreMethods().uploadPost(
+          _descriptionController.text, _file!, uid, displayName, profImage);
+    
+    
+      if(res == "success"){
+        showSnackBar("Posted", context);
+      } else {
+        showSnackBar(res, context);
+      }
+    } catch (e) {
+      showSnackBar(e.toString(), context);
+    }
+  }
+
   _selectImage(BuildContext context) async {
     return showDialog(
         context: context,
@@ -57,6 +79,12 @@ class _AddPostScreenState extends State<AddPostScreen> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _descriptionController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final User user = Provider.of<UserProvider>(context).getUser;
 
@@ -77,7 +105,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
               centerTitle: false,
               actions: [
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () => postImage,
                   child: const Text(
                     'Post',
                     style: TextStyle(
