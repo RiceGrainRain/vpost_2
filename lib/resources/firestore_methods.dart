@@ -11,6 +11,7 @@ class FireStoreMethods {
   Future<String> uploadPost(
     String description,
     Uint8List file,
+    String title,
     String uid,
     String displayName,
     String profImage,
@@ -21,6 +22,7 @@ class FireStoreMethods {
           await StorageMethods().uploadImageToStorage("posts", file, true);
       String postId = const Uuid().v1();
       Post post = Post(
+          title: title,
           description: description,
           displayName: displayName,
           datePublished: DateTime.now(),

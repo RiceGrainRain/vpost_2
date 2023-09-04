@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Post {
+  final String title;
   final String description;
   final String displayName;
   final datePublished;
@@ -12,6 +13,7 @@ class Post {
 
 
   const Post({
+    required this.title,
     required this.description,
     required this.displayName,
     required this.datePublished,
@@ -23,6 +25,7 @@ class Post {
   });
 
   Map<String, dynamic> toJson() => {
+         'title': title,
          'displayName': displayName,
           "uid": uid,
           "description": description,
@@ -36,6 +39,7 @@ class Post {
   static Post fromSnap(DocumentSnapshot snap){
     var snapshot = snap.data() as Map<String, dynamic>;
     return Post(
+      title: snapshot['title'],
       displayName: snapshot['displayName'], 
       description: snapshot['description'], 
       datePublished: snapshot['datePublished'], 

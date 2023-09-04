@@ -24,13 +24,14 @@ class _AddPostScreenState extends State<AddPostScreen> {
     String uid,
     String displayName,
     String profImage,
+    String title,
   ) async {
     setState(() {
       _isLoading = true;
     });
     try {
       String res = await FireStoreMethods().uploadPost(
-          _descriptionController.text, _file!, uid, displayName, profImage);
+          _descriptionController.text, _file!, uid, displayName, profImage, title);
 
       if (res == "success") {
         setState(() {
