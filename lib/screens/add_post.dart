@@ -36,7 +36,8 @@ class _AddPostScreenState extends State<AddPostScreen> {
         setState(() {
           _isLoading = false;
         });
-        showSnackBar("Posted", context);
+        showSnackBar("Eureka!", context);
+        clearImage();
       } else {
         setState(() {
           _isLoading = false;
@@ -87,6 +88,12 @@ class _AddPostScreenState extends State<AddPostScreen> {
         });
   }
 
+  void clearImage() {
+    setState(() {
+      _file = null;
+    });
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -108,7 +115,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
               backgroundColor: mobileBackgroundColor,
               leading: IconButton(
                 icon: const Icon(Icons.arrow_back),
-                onPressed: () {},
+                onPressed: clearImage,
               ),
               title: const Text('Make a new post!'),
               centerTitle: false,
@@ -127,7 +134,8 @@ class _AddPostScreenState extends State<AddPostScreen> {
             ),
             body: Column(
               children: [
-                _isLoading ? const LinearProgressIndicator() : Container(),
+                _isLoading ? const LinearProgressIndicator(color: greenColor,) : const Padding(padding: EdgeInsets.only(top: 0)),
+                const Divider(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.start,
