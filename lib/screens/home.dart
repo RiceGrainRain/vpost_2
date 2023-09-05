@@ -8,7 +8,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.accessible),
+          icon: Icon(Icons.arrow_back),
           onPressed: () => Scaffold.of(context).openDrawer()),
       ),
     );
