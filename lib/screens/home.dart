@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:vpost_2/utils/colors.dart';
+import 'package:vpost_2/widgets/post_card.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -15,6 +16,10 @@ class HomeScreen extends StatelessWidget {
         actions: [
           IconButton(onPressed: () {}, icon: const Icon(CupertinoIcons.info_circle)),
         ],
+      ),
+      body: const Padding(
+        padding: EdgeInsets.all(15.0),
+        child: PostCard(),
       ),
     );
   }

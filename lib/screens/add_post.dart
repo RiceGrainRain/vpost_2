@@ -201,7 +201,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                         decoration: const InputDecoration(
                           prefixIcon: Icon(Icons.arrow_forward_ios,
                               color: primaryColor, size: 14),
-                          hintText: 'Add any informational links',
+                          hintText: 'Add Location',
                           border: InputBorder.none,
                         ),
                         maxLines: 1,
