@@ -18,14 +18,14 @@ class FireStoreMethods {
       Post post = Post(
         title: title,
         description: description,
-        uid: uid,
-        displayName: displayName,
-        bookmarks: [],
-        postId: postId,
-        datePublished: DateTime.now(),
-        postUrl: photoUrl,
-        profImage: profImage, 
         location: location,
+        displayName: displayName,
+        datePublished: DateTime.now(),
+        postId: postId,
+        profImage: profImage, 
+        postUrl: photoUrl,
+        uid: uid, 
+        bookmarks: [],
       );
       _firestore.collection('posts').doc(postId).set(post.toJson());
       res = "success";

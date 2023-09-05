@@ -66,7 +66,8 @@ class _AddPostScreenState extends State<AddPostScreen> {
     );
   }
 
-  void postImage(String title, String uid, String displayName, String profImage, String location) async {
+  void postImage(String title, String uid, String displayName, String profImage,
+      String location) async {
     setState(() {
       isLoading = true;
     });
@@ -74,16 +75,15 @@ class _AddPostScreenState extends State<AddPostScreen> {
     try {
       // upload to storage and db
       String res = await FireStoreMethods().uploadPost(
+        title,
         _descriptionController.text,
-        uid,
         _file!,
+        uid,
         displayName,
         profImage,
         _infoLinkController.text,
-        title, 
-
       );
-     if (res == "success") {
+      if (res == "success") {
         setState(() {
           isLoading = false;
         });
@@ -105,8 +105,6 @@ class _AddPostScreenState extends State<AddPostScreen> {
       _file = null;
     });
   }
-
-
 
   @override
   Widget build(BuildContext context) {
