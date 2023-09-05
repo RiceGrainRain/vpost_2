@@ -15,6 +15,7 @@ class FireStoreMethods {
     String uid,
     String displayName,
     String profImage,
+    String infoLink,
   ) async {
     String res = 'some error occurred';
     try {
@@ -25,6 +26,7 @@ class FireStoreMethods {
           title: title,
           description: description,
           displayName: displayName,
+          infoLink: infoLink,
           datePublished: DateTime.now(),
           postId: postId,
           profImage: profImage,

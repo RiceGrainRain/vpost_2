@@ -1,9 +1,9 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
-import 'package:vpost_2/models/user.dart';
-import 'package:vpost_2/providers/user_provider.dart';
+/* import 'package:provider/provider.dart';
+/* import 'package:vpost_2/models/user.dart';
+import 'package:vpost_2/providers/user_provider.dart'; */ */
 import 'package:vpost_2/resources/firestore_methods.dart';
 import 'package:vpost_2/utils/colors.dart';
 import 'package:vpost_2/utils/utils.dart';
@@ -18,6 +18,7 @@ class AddPostScreen extends StatefulWidget {
 class _AddPostScreenState extends State<AddPostScreen> {
   Uint8List? _file;
   final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _infoLinkController = TextEditingController();
   bool _isLoading = false;
 
   void postImage(
@@ -25,13 +26,20 @@ class _AddPostScreenState extends State<AddPostScreen> {
     String displayName,
     String profImage,
     String title,
+    String infoLink,
   ) async {
     setState(() {
       _isLoading = true;
     });
     try {
       String res = await FireStoreMethods().uploadPost(
-          _descriptionController.text, _file!, uid, displayName, profImage, title);
+          _descriptionController.text,
+          _file!,
+          uid,
+          displayName,
+          profImage,
+          title,
+          _infoLinkController.text);
 
       if (res == "success") {
         setState(() {
@@ -99,11 +107,12 @@ class _AddPostScreenState extends State<AddPostScreen> {
   void dispose() {
     super.dispose();
     _descriptionController.dispose();
+    _infoLinkController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final User user = Provider.of<UserProvider>(context).getUser;
+    //final User user = Provider.of<UserProvider>(context).getUser;
 
     return _file == null
         ? Center(
@@ -118,7 +127,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 icon: const Icon(Icons.arrow_back),
                 onPressed: clearImage,
               ),
-              title: const Text('Make a new post!'),
+              title: const Text('Make a new post'),
               centerTitle: false,
               actions: [
                 TextButton(
@@ -135,18 +144,20 @@ class _AddPostScreenState extends State<AddPostScreen> {
             ),
             body: Column(
               children: [
-                _isLoading ? const LinearProgressIndicator(color: greenColor,) : const Padding(padding: EdgeInsets.only(top: 0)),
+                _isLoading
+                    ? const LinearProgressIndicator(
+                        color: greenColor,
+                      )
+                    : const Padding(padding: EdgeInsets.only(top: 0)),
                 const Divider(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CircleAvatar(
-                      backgroundImage: NetworkImage(user.photoUrl),
-                    ),
                     SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.3,
+                      width: MediaQuery.of(context).size.width * 0.6,
                       child: TextField(
+                        textAlignVertical: TextAlignVertical.center,
                         controller: _descriptionController,
                         decoration: const InputDecoration(
                           hintText: 'Give a description...',
@@ -172,7 +183,33 @@ class _AddPostScreenState extends State<AddPostScreen> {
                       ),
                     )
                   ],
-                )
+                ),
+                const Divider(
+                  color: primaryColor,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.88,
+                      child: TextField(
+                        textAlignVertical: TextAlignVertical.center,
+                        controller: _infoLinkController,
+                        decoration: const InputDecoration(
+                          prefixIcon: Icon(Icons.arrow_forward_ios,
+                              color: primaryColor, size: 14),
+                          hintText: 'Add any informational links',
+                          border: InputBorder.none,
+                        ),
+                        maxLines: 1,
+                      ),
+                    ),
+                  ],
+                ),
+                const Divider(
+                  color: primaryColor,
+                ),
               ],
             ),
           );

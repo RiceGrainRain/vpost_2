@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Post {
   final String title;
   final String description;
+  final String infoLink;
   final String displayName;
   final datePublished;
   final String postUrl;
@@ -11,10 +12,10 @@ class Post {
   final String uid;
   final bookmarks;
 
-
   const Post({
     required this.title,
     required this.description,
+    required this.infoLink,
     required this.displayName,
     required this.datePublished,
     required this.postId,
@@ -25,30 +26,31 @@ class Post {
   });
 
   Map<String, dynamic> toJson() => {
-         'title': title,
-         'displayName': displayName,
-          "uid": uid,
-          "description": description,
-          "postId": postId,
-          "profImage": profImage,
-          "bookmarks": bookmarks,
-          'datePublished': datePublished,
-          'postUrl': postUrl,
-  };
+        'title': title,
+        'displayName': displayName,
+        "uid": uid,
+        "description": description,
+        "infoLink": infoLink,
+        "postId": postId,
+        "profImage": profImage,
+        "bookmarks": bookmarks,
+        'datePublished': datePublished,
+        'postUrl': postUrl,
+      };
 
-  static Post fromSnap(DocumentSnapshot snap){
+  static Post fromSnap(DocumentSnapshot snap) {
     var snapshot = snap.data() as Map<String, dynamic>;
     return Post(
       title: snapshot['title'],
-      displayName: snapshot['displayName'], 
-      description: snapshot['description'], 
-      datePublished: snapshot['datePublished'], 
+      displayName: snapshot['displayName'],
+      description: snapshot['description'],
+      infoLink: snapshot['infoLink'],
+      datePublished: snapshot['datePublished'],
       postId: snapshot['postId'],
-      postUrl: snapshot['postUrl'], 
-      uid: snapshot['uid'], 
-      profImage: snapshot['profImage'], 
+      postUrl: snapshot['postUrl'],
+      uid: snapshot['uid'],
+      profImage: snapshot['profImage'],
       bookmarks: snapshot['bookmarks'],
-      );
-
+    );
   }
 }
