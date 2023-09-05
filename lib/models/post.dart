@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Post {
   final String title;
   final String description;
-  final String infoLink;
+  final String location;
   final String displayName;
   final datePublished;
   final String postUrl;
@@ -15,7 +15,7 @@ class Post {
   const Post({
     required this.title,
     required this.description,
-    required this.infoLink,
+    required this.location,
     required this.displayName,
     required this.datePublished,
     required this.postId,
@@ -30,7 +30,7 @@ class Post {
         'displayName': displayName,
         "uid": uid,
         "description": description,
-        "infoLink": infoLink,
+        "location": location,
         "postId": postId,
         "profImage": profImage,
         "bookmarks": bookmarks,
@@ -44,7 +44,7 @@ class Post {
       title: snapshot['title'],
       displayName: snapshot['displayName'],
       description: snapshot['description'],
-      infoLink: snapshot['infoLink'],
+      location: snapshot['location'],
       datePublished: snapshot['datePublished'],
       postId: snapshot['postId'],
       postUrl: snapshot['postUrl'],

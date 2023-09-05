@@ -1,102 +1,103 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-/* import 'package:provider/provider.dart';
-/* import 'package:vpost_2/models/user.dart';
-import 'package:vpost_2/providers/user_provider.dart'; */ */
-import 'package:vpost_2/resources/firestore_methods.dart';
-import 'package:vpost_2/utils/colors.dart';
-import 'package:vpost_2/utils/utils.dart';
+import 'package:provider/provider.dart';
+import '../providers/user_provider.dart';
+import '../resources/firestore_methods.dart';
+import '../utils/colors.dart';
+import '../utils/utils.dart';
 
 class AddPostScreen extends StatefulWidget {
-  const AddPostScreen({super.key});
+  const AddPostScreen({Key? key}) : super(key: key);
 
   @override
-  State<AddPostScreen> createState() => _AddPostScreenState();
+  _AddPostScreenState createState() => _AddPostScreenState();
 }
 
 class _AddPostScreenState extends State<AddPostScreen> {
   Uint8List? _file;
+  bool isLoading = false;
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _infoLinkController = TextEditingController();
-  bool _isLoading = false;
 
-  void postImage(
-    String uid,
-    String displayName,
-    String profImage,
-    String title,
-    String infoLink,
-  ) async {
+  @override
+  void dispose() {
+    super.dispose();
+    _descriptionController.dispose();
+  }
+
+  _selectImage(BuildContext parentContext) async {
+    return showDialog(
+      context: parentContext,
+      builder: (BuildContext context) {
+        return SimpleDialog(
+          title: const Text('Create a Post'),
+          children: <Widget>[
+            SimpleDialogOption(
+                padding: const EdgeInsets.all(20),
+                child: const Text('Take a photo'),
+                onPressed: () async {
+                  Navigator.pop(context);
+                  Uint8List file = await pickImage(ImageSource.camera);
+                  setState(() {
+                    _file = file;
+                  });
+                }),
+            SimpleDialogOption(
+                padding: const EdgeInsets.all(20),
+                child: const Text('Choose from Gallery'),
+                onPressed: () async {
+                  Navigator.of(context).pop();
+                  Uint8List file = await pickImage(ImageSource.gallery);
+                  setState(() {
+                    _file = file;
+                  });
+                }),
+            SimpleDialogOption(
+              padding: const EdgeInsets.all(20),
+              child: const Text("Cancel"),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  void postImage(String title, String uid, String displayName, String profImage, String location) async {
     setState(() {
-      _isLoading = true;
+      isLoading = true;
     });
+    // start the loading
     try {
+      // upload to storage and db
       String res = await FireStoreMethods().uploadPost(
-          _descriptionController.text,
-          _file!,
-          uid,
-          displayName,
-          profImage,
-          title,
-          _infoLinkController.text);
+        _descriptionController.text,
+        uid,
+        _file!,
+        displayName,
+        profImage,
+        _infoLinkController.text,
+        title, 
 
-      if (res == "success") {
+      );
+     if (res == "success") {
         setState(() {
-          _isLoading = false;
+          isLoading = false;
         });
-        // ignore: use_build_context_synchronously
         showSnackBar("Eureka!", context);
         clearImage();
       } else {
         setState(() {
-          _isLoading = false;
+          isLoading = false;
         });
-        // ignore: use_build_context_synchronously
         showSnackBar(res, context);
       }
     } catch (e) {
       showSnackBar(e.toString(), context);
     }
-  }
-
-  _selectImage(BuildContext context) async {
-    return showDialog(
-        context: context,
-        builder: (context) {
-          return SimpleDialog(
-            title: const Text('Create a Post'),
-            children: [
-              SimpleDialogOption(
-                padding: const EdgeInsets.all(20),
-                child: const Text('Take a photo'),
-                onPressed: () async {
-                  Uint8List file = await pickImage(ImageSource.camera);
-                  setState(() {
-                    _file = file;
-                  });
-                },
-              ),
-              SimpleDialogOption(
-                padding: const EdgeInsets.all(20),
-                child: const Text('Choose from Gallery'),
-                onPressed: () async {
-                  Uint8List file = await pickImage(ImageSource.gallery);
-                  setState(() {
-                    _file = file;
-                  });
-                },
-              ),
-              SimpleDialogOption(
-                padding: const EdgeInsets.all(20),
-                child: const Text('Cancel'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        });
   }
 
   void clearImage() {
@@ -105,23 +106,21 @@ class _AddPostScreenState extends State<AddPostScreen> {
     });
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    _descriptionController.dispose();
-    _infoLinkController.dispose();
-  }
+
 
   @override
   Widget build(BuildContext context) {
-    //final User user = Provider.of<UserProvider>(context).getUser;
+    final UserProvider userProvider = Provider.of<UserProvider>(context);
 
     return _file == null
         ? Center(
             child: IconButton(
-            icon: const Icon(Icons.upload),
-            onPressed: () => _selectImage(context),
-          ))
+              icon: const Icon(
+                Icons.upload,
+              ),
+              onPressed: () => _selectImage(context),
+            ),
+          )
         : Scaffold(
             appBar: AppBar(
               backgroundColor: mobileBackgroundColor,
@@ -129,61 +128,65 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 icon: const Icon(Icons.arrow_back),
                 onPressed: clearImage,
               ),
-              title: const Text('Make a new post'),
+              title: const Text(
+                'Post to',
+              ),
               centerTitle: false,
-              actions: [
+              actions: <Widget>[
                 TextButton(
-                  onPressed: () => postImage,
+                  onPressed: () => postImage(
+                    userProvider.getUser.email,
+                    userProvider.getUser.uid,
+                    userProvider.getUser.displayName,
+                    userProvider.getUser.photoUrl,
+                    userProvider.getUser.userAge,
+                  ),
                   child: const Text(
-                    'Post',
+                    "Post",
                     style: TextStyle(
                         color: greenColor,
                         fontWeight: FontWeight.bold,
-                        fontSize: 16),
+                        fontSize: 16.0),
                   ),
-                ),
+                )
               ],
             ),
+            // POST FORM
             body: Column(
-              children: [
-                _isLoading
-                    ? const LinearProgressIndicator(
-                        color: greenColor,
-                      )
-                    : const Padding(padding: EdgeInsets.only(top: 0)),
+              children: <Widget>[
+                isLoading
+                    ? const LinearProgressIndicator()
+                    : const Padding(padding: EdgeInsets.only(top: 0.0)),
                 const Divider(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                  children: <Widget>[
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.6,
                       child: TextField(
-                        textAlignVertical: TextAlignVertical.center,
                         controller: _descriptionController,
                         decoration: const InputDecoration(
-                          hintText: 'Give a description...',
-                          border: InputBorder.none,
-                        ),
+                            hintText: "Write a caption...",
+                            border: InputBorder.none),
                         maxLines: 8,
                       ),
                     ),
                     SizedBox(
-                      height: 45,
-                      width: 45,
+                      height: 45.0,
+                      width: 45.0,
                       child: AspectRatio(
-                        aspectRatio: 487 / 51,
+                        aspectRatio: 487 / 451,
                         child: Container(
                           decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: MemoryImage(_file!),
-                              fit: BoxFit.fill,
-                              alignment: FractionalOffset.center,
-                            ),
-                          ),
+                              image: DecorationImage(
+                            fit: BoxFit.fill,
+                            alignment: FractionalOffset.topCenter,
+                            image: MemoryImage(_file!),
+                          )),
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
                 const Divider(

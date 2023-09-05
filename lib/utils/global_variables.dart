@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:vpost_2/screens/add_post.dart';
 import 'package:vpost_2/screens/home.dart';
+import 'package:vpost_2/screens/add_post.dart';
 
 const webScreenSize = 600;
 
