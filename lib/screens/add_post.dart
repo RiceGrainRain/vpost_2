@@ -17,6 +17,7 @@ class AddPostScreen extends StatefulWidget {
 class _AddPostScreenState extends State<AddPostScreen> {
   Uint8List? _file;
   bool isLoading = false;
+  final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _infoLinkController = TextEditingController();
 
@@ -75,7 +76,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
     try {
       // upload to storage and db
       String res = await FireStoreMethods().uploadPost(
-        title,
+        _titleController.text,
         _descriptionController.text,
         _file!,
         uid,
@@ -159,9 +160,33 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.88,
+                      child: TextField(
+                        textAlignVertical: TextAlignVertical.center,
+                        controller: _titleController,
+                        decoration: const InputDecoration(
+                          prefixIcon: Icon(Icons.arrow_forward_ios,
+                              color: primaryColor, size: 14),
+                          hintText: 'Add a title',
+                          border: InputBorder.none,
+                        ),
+                        maxLines: 1,
+                      ),
+                    ),
+                  ],
+                ),
+                const Divider(
+                  color: primaryColor,
+                  thickness: 1,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.6,
+                      width: MediaQuery.of(context).size.width * 0.4,
                       child: TextField(
                         controller: _descriptionController,
                         decoration: const InputDecoration(
@@ -189,6 +214,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 ),
                 const Divider(
                   color: primaryColor,
+                  thickness: 0.5,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -212,6 +238,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 ),
                 const Divider(
                   color: primaryColor,
+                  thickness: 1,
                 ),
               ],
             ),
