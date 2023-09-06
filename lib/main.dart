@@ -2,6 +2,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:vpost_2/providers/user_provider.dart';
 import 'package:vpost_2/responsive/mobile_screen_layout.dart';
 import 'package:vpost_2/responsive/responsive_layout.dart';
 import 'package:vpost_2/responsive/web_layout.dart';
@@ -20,33 +22,38 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'VPOST-2',
-      theme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: mobileBackgroundColor,
-      ),
-      home: StreamBuilder(
-          stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.active) {
-              if (snapshot.hasData) {
-                return const ResponsiveLayout(
-                    webScreenLayout: WebScreenLayout(),
-                    mobileScreenLayout: MobileScreenLayout());
-              } else if (snapshot.hasError) {
-                return Center(child: Text('${snapshot.error}'));
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => UserProvider())
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'VPOST-2',
+        theme: ThemeData.dark().copyWith(
+          scaffoldBackgroundColor: mobileBackgroundColor,
+        ),
+        home: StreamBuilder(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.active) {
+                if (snapshot.hasData) {
+                  return const ResponsiveLayout(
+                      webScreenLayout: WebScreenLayout(),
+                      mobileScreenLayout: MobileScreenLayout());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('${snapshot.error}'));
+                }
               }
-            }
-            if(snapshot.connectionState == ConnectionState.waiting){
-              return const Center(
-                child: CircularProgressIndicator(
-                  color: primaryColor,
-                )
-              );
-            }
-            return const LoginScreen();
-          }),
+              if(snapshot.connectionState == ConnectionState.waiting){
+                return const Center(
+                  child: CircularProgressIndicator(
+                    color: primaryColor,
+                  )
+                );
+              }
+              return const LoginScreen();
+            }),
+      ),
     );
   }
 }

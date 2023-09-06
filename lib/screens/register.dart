@@ -92,14 +92,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
             height: 20,
           ),
 
-          const Text(
-              textAlign: TextAlign.center,
-              "Ready to volunteer?",
-              style: TextStyle(
-                fontSize: 48,
-                fontWeight: FontWeight.bold,
-              )),
-
           const SizedBox(height: 40),
 
           Stack(
@@ -118,7 +110,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 bottom: -10,
                 left: 80,
                 child: IconButton(
-                  onPressed: () {},
+                  onPressed: selectImage,
                   icon: const Icon(Icons.add_a_photo),
                 ),
               ),
