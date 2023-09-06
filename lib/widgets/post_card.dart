@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:vpost_2/utils/colors.dart';
 
 class PostCard extends StatelessWidget {
@@ -9,7 +10,7 @@ class PostCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 100,
+      height: 550,
       decoration: BoxDecoration(
           border: Border.all(color: Colors.white),
           color: mobileBackgroundColor,
@@ -41,7 +42,8 @@ class PostCard extends StatelessWidget {
                               fontWeight: FontWeight.bold, fontSize: 18),
                         ),
                         Text(
-                          'By ${snap['username']} • ${snap['datePublished']}',
+                          'By ${snap['displayName']} • ${DateFormat.yMMMd()
+                        .format(snap['datePublished'].toDate())}',
                           style: const TextStyle(color: secondaryColor),
                         ),
                       ],
@@ -83,31 +85,33 @@ class PostCard extends StatelessWidget {
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.35,
             width: double.infinity,
-            child: Image.network(
-                snap['postUrl'],
-                fit: BoxFit.cover),
+            child: Image.network(snap['postUrl'], fit: BoxFit.cover),
           ),
 
-
-        Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    snap['description'],
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  )
-                ],
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.only(
+              top: 8,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+              child: RichText(
+                text: TextSpan(
+                  style: const TextStyle(color: primaryColor),
+                  children: [
+                    TextSpan(
+                      text: ' ${snap['description']}',
+                    ),
+                  ],
+                ),
               ),
             ),
-
+          ),
 
           //bookmark, share
           Expanded(
             child: Padding(
-              padding: EdgeInsets.all(4),
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 0),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
@@ -127,7 +131,8 @@ class PostCard extends StatelessWidget {
                       child: Align(
                     alignment: Alignment.bottomRight,
                     child: Padding(
-                      padding: const EdgeInsets.all(16),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 10),
                       child: Text(
                         snap['location'],
                         style: const TextStyle(color: secondaryColor),
