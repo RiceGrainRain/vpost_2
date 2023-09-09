@@ -2,14 +2,9 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:vpost_2/resources/autocomplate_prediction.dart';
-import 'package:vpost_2/resources/place_auto_complate_response.dart';
-import 'package:vpost_2/widgets/location_tile.dart';
 import '../providers/user_provider.dart';
 import '../resources/firestore_methods.dart';
-import '../resources/maps_network_method.dart';
 import '../utils/colors.dart';
-import '../utils/global_variables.dart';
 import '../utils/utils.dart';
 
 class AddPostScreen extends StatefulWidget {
@@ -20,34 +15,11 @@ class AddPostScreen extends StatefulWidget {
 }
 
 class _AddPostScreenState extends State<AddPostScreen> {
-  List<AutocompletePrediction> placePredictions = [];
-
   Uint8List? _file;
   bool isLoading = false;
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _infoLinkController = TextEditingController();
-
-  void placeAutocomplate(String query) async {
-    Uri uri = Uri.https(
-        "maps.googleapis.com",
-        'maps/aps/api/place/autocomplete/json', //unencoder path
-        {
-          "input": query,
-          "key": apiKey,
-        });
-    String? response = await NetworkUtility.fetchUrl(uri);
-
-    if (response != null) {
-      PlaceAutocompleteResponse result =
-          PlaceAutocompleteResponse.parseAutocompleteResult(response);
-      if (result.predictions != null) {
-        setState(() {
-          placePredictions = result.predictions!;
-        });
-      }
-    }
-  }
 
   @override
   void dispose() {
@@ -161,16 +133,13 @@ class _AddPostScreenState extends State<AddPostScreen> {
               centerTitle: false,
               actions: <Widget>[
                 TextButton(
-                  onPressed: () {
-                    postImage(
-                      userProvider.getUser.email,
-                      userProvider.getUser.uid,
-                      userProvider.getUser.displayName,
-                      userProvider.getUser.photoUrl,
-                      userProvider.getUser.userAge,
-                    );
-                    placeAutocomplate("Dubai");
-                  },
+                  onPressed: () => postImage(
+                    userProvider.getUser.email,
+                    userProvider.getUser.uid,
+                    userProvider.getUser.displayName,
+                    userProvider.getUser.photoUrl,
+                    userProvider.getUser.userAge,
+                  ),
                   child: const Text(
                     "Post",
                     style: TextStyle(
@@ -253,10 +222,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   children: [
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.88,
-                      child: TextFormField(
-                        onChanged: (value) {
-                          placeAutocomplate(value);
-                        },
+                      child: TextField(
                         textAlignVertical: TextAlignVertical.center,
                         controller: _infoLinkController,
                         decoration: const InputDecoration(
@@ -273,14 +239,6 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 const Divider(
                   color: primaryColor,
                   thickness: 1,
-                ),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: placePredictions.length,
-                    itemBuilder: (context, index) => LocationTile(
-                        location: placePredictions[index].description!,
-                        press: () {}),
-                  ),
                 ),
               ],
             ),
