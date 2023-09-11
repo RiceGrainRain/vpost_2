@@ -21,7 +21,6 @@ class AddPostScreen extends StatefulWidget {
 
 class _AddPostScreenState extends State<AddPostScreen> {
   List<AutocompletePrediction> placePredictions = [];
-
   Uint8List? _file;
   bool isLoading = false;
   final TextEditingController _titleController = TextEditingController();
@@ -31,7 +30,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
   void placeAutocomplate(String query) async {
     Uri uri = Uri.https(
         "maps.googleapis.com",
-        'maps/aps/api/place/autocomplete/json', //unencoder path
+        'maps/api/place/autocomplete/json', //unencoder path
         {
           "input": query,
           "key": apiKey,
@@ -187,7 +186,10 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 isLoading
                     ? const LinearProgressIndicator()
                     : const Padding(padding: EdgeInsets.only(top: 0.0)),
-                const Divider(),
+                const Divider(
+                  color: primaryColor,
+                  thickness: 1,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -217,13 +219,13 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.4,
+                      width: MediaQuery.of(context).size.width * 0.8,
                       child: TextField(
                         controller: _descriptionController,
                         decoration: const InputDecoration(
-                            hintText: "Write a caption...",
+                            hintText: "Add a description",
                             border: InputBorder.none),
-                        maxLines: 8,
+                        maxLines: 4,
                       ),
                     ),
                     SizedBox(
@@ -245,7 +247,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 ),
                 const Divider(
                   color: primaryColor,
-                  thickness: 0.5,
+                  thickness: 1,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -279,7 +281,10 @@ class _AddPostScreenState extends State<AddPostScreen> {
                     itemCount: placePredictions.length,
                     itemBuilder: (context, index) => LocationTile(
                         location: placePredictions[index].description!,
-                        press: () {}),
+                        press: () => setState(() {
+                              _infoLinkController.text =
+                                  placePredictions[index].description!;
+                            })),
                   ),
                 ),
               ],

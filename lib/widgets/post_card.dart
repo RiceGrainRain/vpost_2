@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:map_launcher/map_launcher.dart';
 import 'package:vpost_2/utils/colors.dart';
 
 class PostCard extends StatelessWidget {
@@ -42,8 +44,7 @@ class PostCard extends StatelessWidget {
                               fontWeight: FontWeight.bold, fontSize: 18),
                         ),
                         Text(
-                          'By ${snap['displayName']} • ${DateFormat.yMMMd()
-                        .format(snap['datePublished'].toDate())}',
+                          'By ${snap['displayName']} • ${DateFormat.yMMMd().format(snap['datePublished'].toDate())}',
                           style: const TextStyle(color: secondaryColor),
                         ),
                       ],
@@ -132,10 +133,25 @@ class PostCard extends StatelessWidget {
                     alignment: Alignment.bottomRight,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 10),
-                      child: Text(
-                        snap['location'],
-                        style: const TextStyle(color: secondaryColor),
+                          horizontal: 16, vertical: 15),
+                      child: InkWell(
+                        onTap: () async {
+                          List<Location> locations = await locationFromAddress(
+                              snap["location"]);
+                          Location locationConvert = locations[0];
+                          double latitude = locationConvert.latitude;
+                          double longitude = locationConvert.longitude;
+                          List<AvailableMap> availableMaps = await MapLauncher.installedMaps;
+                          await availableMaps.first.showMarker(
+                              coords: Coords(latitude, longitude),
+                              title: snap["location"],
+                            );
+                        },
+                        child: Text(
+                          snap['location'],
+                          style: const TextStyle(color: blueColor),
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                     ),
                   ))
