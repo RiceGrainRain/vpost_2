@@ -4,11 +4,17 @@ import 'package:intl/intl.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:map_launcher/map_launcher.dart';
 import 'package:vpost_2/utils/colors.dart';
+import 'package:like_button/like_button.dart';
 
-class PostCard extends StatelessWidget {
+class PostCard extends StatefulWidget {
   final snap;
   const PostCard({super.key, required this.snap});
 
+  @override
+  State<PostCard> createState() => _PostCardState();
+}
+
+class _PostCardState extends State<PostCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -29,7 +35,7 @@ class PostCard extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 16,
-                  backgroundImage: NetworkImage(snap['profImage']),
+                  backgroundImage: NetworkImage(widget.snap['profImage']),
                 ),
                 Expanded(
                   child: Padding(
@@ -39,12 +45,12 @@ class PostCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          snap['title'],
+                          widget.snap['title'],
                           style: const TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 18),
                         ),
                         Text(
-                          'By ${snap['displayName']} • ${DateFormat.yMMMd().format(snap['datePublished'].toDate())}',
+                          'By ${widget.snap['displayName']} • ${DateFormat.yMMMd().format(widget.snap['datePublished'].toDate())}',
                           style: const TextStyle(color: secondaryColor),
                         ),
                       ],
@@ -86,7 +92,7 @@ class PostCard extends StatelessWidget {
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.35,
             width: double.infinity,
-            child: Image.network(snap['postUrl'], fit: BoxFit.cover),
+            child: Image.network(widget.snap['postUrl'], fit: BoxFit.cover),
           ),
 
           Container(
@@ -101,7 +107,7 @@ class PostCard extends StatelessWidget {
                   style: const TextStyle(color: primaryColor),
                   children: [
                     TextSpan(
-                      text: ' ${snap['description']}',
+                      text: ' ${widget.snap['description']}',
                     ),
                   ],
                 ),
@@ -115,15 +121,19 @@ class PostCard extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 0),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.bookmark_add,
-                      color: Colors.amber,
-                      size: 26,
+                children: [Padding(
+                      padding: const EdgeInsets.only(top: 70.0, left: 20, right: 10),
+                      child: LikeButton(
+                        size: 26,
+                        likeBuilder: (isTapped) {
+                          return Icon(
+                            Icons.bookmark,
+                            color: isTapped ? Colors.amber : Colors.grey,
+                            size: 26,
+                          );
+                        },
+                      ),
                     ),
-                  ),
                   IconButton(
                     onPressed: () {},
                     icon: const Icon(CupertinoIcons.share),
@@ -137,18 +147,19 @@ class PostCard extends StatelessWidget {
                       child: InkWell(
                         onTap: () async {
                           List<Location> locations = await locationFromAddress(
-                              snap["location"]);
+                              widget.snap["location"]);
                           Location locationConvert = locations[0];
                           double latitude = locationConvert.latitude;
                           double longitude = locationConvert.longitude;
-                          List<AvailableMap> availableMaps = await MapLauncher.installedMaps;
+                          List<AvailableMap> availableMaps =
+                              await MapLauncher.installedMaps;
                           await availableMaps.first.showMarker(
-                              coords: Coords(latitude, longitude),
-                              title: snap["location"],
-                            );
+                            coords: Coords(latitude, longitude),
+                            title: widget.snap["location"],
+                          );
                         },
                         child: Text(
-                          snap['location'],
+                          widget.snap['location'],
                           style: const TextStyle(color: blueColor),
                           overflow: TextOverflow.ellipsis,
                         ),

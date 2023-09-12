@@ -5,7 +5,7 @@ class Post {
   final String description;
   final String location;
   final String displayName;
-  final datePublished;
+  final DateTime datePublished;
   final String postUrl;
   final String postId;
   final String profImage;
