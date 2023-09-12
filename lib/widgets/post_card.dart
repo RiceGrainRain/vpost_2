@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:map_launcher/map_launcher.dart';
+import 'package:provider/provider.dart';
+import 'package:vpost_2/models/user.dart';
+import 'package:vpost_2/providers/user_provider.dart';
 import 'package:vpost_2/utils/colors.dart';
+import 'package:vpost_2/widgets/bookmark_animation.dart';
 
 class PostCard extends StatelessWidget {
   final snap;
@@ -11,6 +15,7 @@ class PostCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final User user = Provider.of<UserProvider>(context).getUser;
     return Container(
       height: 550,
       decoration: BoxDecoration(
@@ -116,12 +121,16 @@ class PostCard extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.bookmark_add,
-                      color: Colors.amber,
-                      size: 26,
+                  BookmarkAnimation(
+                    isAnimating: snap['boomarks'].contains(user.uid),
+                    smallLike: true,
+                    child: IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.bookmark_add,
+                        color: Colors.amber,
+                        size: 26,
+                      ),
                     ),
                   ),
                   IconButton(
@@ -136,16 +145,17 @@ class PostCard extends StatelessWidget {
                           horizontal: 16, vertical: 15),
                       child: InkWell(
                         onTap: () async {
-                          List<Location> locations = await locationFromAddress(
-                              snap["location"]);
+                          List<Location> locations =
+                              await locationFromAddress(snap["location"]);
                           Location locationConvert = locations[0];
                           double latitude = locationConvert.latitude;
                           double longitude = locationConvert.longitude;
-                          List<AvailableMap> availableMaps = await MapLauncher.installedMaps;
+                          List<AvailableMap> availableMaps =
+                              await MapLauncher.installedMaps;
                           await availableMaps.first.showMarker(
-                              coords: Coords(latitude, longitude),
-                              title: snap["location"],
-                            );
+                            coords: Coords(latitude, longitude),
+                            title: snap["location"],
+                          );
                         },
                         child: Text(
                           snap['location'],
