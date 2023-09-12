@@ -12,7 +12,7 @@ class PostCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 550,
+      height: 500,
       decoration: BoxDecoration(
           border: Border.all(color: Colors.white),
           color: mobileBackgroundColor,
