@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vpost_2/utils/colors.dart';
 
 // ignore: must_be_immutable
 class BookmarkButton extends StatelessWidget {
@@ -12,7 +13,7 @@ class BookmarkButton extends StatelessWidget {
       onPressed: onPressed,
       icon: Icon(
         isLiked ? Icons.bookmark: Icons.bookmark_border,
-        color: isLiked? Colors.amber: Colors.grey,
+        color: isLiked? greenColor: secondaryColor,
         size: isLiked? 32: 30, 
       ),
     );

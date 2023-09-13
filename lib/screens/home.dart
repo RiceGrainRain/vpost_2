@@ -54,18 +54,21 @@ class _HomeScreenState extends State<HomeScreen> {
                         contentPadding: const EdgeInsets.only(top: 10),
                         border: const OutlineInputBorder(
                           borderRadius: BorderRadius.all(
-                            Radius.circular(10),
-                          ),
-                          borderSide: BorderSide.none,
-                        ),
-                        enabledBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10),
+                            Radius.circular(12),
                           ),
                           borderSide: BorderSide(
                             color: secondaryColor,
                             width: 1,
                           ),
+                        ),
+                        focusedBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(12)
+                          ),
+                          borderSide: BorderSide(
+                            color: secondaryColor,
+                            width: 1.5,
+                          )
                         ),
                         hintText: 'Search Opportunities',
                         hintStyle: const TextStyle(

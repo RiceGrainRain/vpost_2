@@ -70,7 +70,10 @@ class PostDetails extends StatelessWidget {
               ),
             );
           },
-          icon: const Icon(Icons.more_vert),
+          icon: const Padding(
+            padding: EdgeInsets.only(right: 20.0, bottom: 20),
+            child: Icon(Icons.more_horiz, size: 28,),
+          ),
         ),
       ],
     );
