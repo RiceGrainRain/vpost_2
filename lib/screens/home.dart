@@ -18,24 +18,70 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
 
-    return Column(
-      children: [
-        SizedBox(height: 40,),
-            Container(
-              height: 50,
-              padding: const EdgeInsets.all(12),
-              margin: const EdgeInsets.symmetric(horizontal: 25),
-              decoration: BoxDecoration(color: mobileSearchColor, borderRadius: BorderRadius.circular(8)),
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Search"),
-                  Icon(Icons.search),
-                ],
+    return Scaffold(
+    appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60),
+        child: AppBar(
+          backgroundColor: mobileBackgroundColor,
+          flexibleSpace: Container(),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Container(
+                  height: 42,
+                  margin: const EdgeInsets.only(left: 15),
+                  child: Material(
+                    borderRadius: BorderRadius.circular(7),
+                    elevation: 1,
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        prefixIcon: InkWell(
+                          onTap: () {},
+                          child: const Padding(
+                            padding: EdgeInsets.only(
+                              left: 6,
+                            ),
+                            child: Icon(
+                              Icons.search,
+                              color: primaryColor,
+                              size: 23,
+                            ),
+                          ),
+                        ),
+                        filled: true,
+                        fillColor: webBackgroundColor,
+                        contentPadding: const EdgeInsets.only(top: 10),
+                        border: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                          borderSide: BorderSide.none,
+                        ),
+                        enabledBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                          borderSide: BorderSide(
+                            color: secondaryColor,
+                            width: 1,
+                          ),
+                        ),
+                        hintText: 'Search Opportunities',
+                        hintStyle: const TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 17,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               ),
-            ),
-        Expanded(
-          child: StreamBuilder(
+            ],
+          ),
+        ),
+      ),
+          body: StreamBuilder(
             stream: FirebaseFirestore.instance.collection('posts').snapshots(),
             builder: (context,
                 AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
@@ -64,8 +110,6 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             },
           ),
-        ),
-      ],
     );
   }
 }
