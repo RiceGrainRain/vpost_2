@@ -25,10 +25,31 @@ class FireStoreMethods {
         profImage: profImage, 
         postUrl: photoUrl,
         uid: uid, 
-        bookmarks: {},
+        bookmarks: [],
       );
       _firestore.collection('posts').doc(postId).set(post.toJson());
       res = "success";
+    } catch (err) {
+      res = err.toString();
+    }
+    return res;
+  }
+
+  Future<String> likePost(String postId, String uid, List bookmarks) async {
+    String res = "Some error occurred";
+    try {
+      if (bookmarks.contains(uid)) {
+        // if the likes list contains the user uid, we need to remove it
+        _firestore.collection('posts').doc(postId).update({
+          'bookmarks': FieldValue.arrayRemove([uid])
+        });
+      } else {
+        // else we need to add uid to the likes array
+        _firestore.collection('posts').doc(postId).update({
+          'bookmarks': FieldValue.arrayUnion([uid])
+        });
+      }
+      res = 'success';
     } catch (err) {
       res = err.toString();
     }
