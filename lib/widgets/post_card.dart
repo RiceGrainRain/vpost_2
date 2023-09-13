@@ -37,11 +37,10 @@ class _PostCardState extends State<PostCard> {
   Widget build(BuildContext context) {
     final model.User user = Provider.of<UserProvider>(context).getUser;
     return Container(
-      height: 500,
-      decoration: BoxDecoration(
-          border: Border.all(color: Colors.white),
-          color: mobileBackgroundColor,
-          borderRadius: const BorderRadius.all(Radius.circular(30))),
+      height: 550,
+      decoration: const BoxDecoration(
+          color: mobileSearchColor,
+          borderRadius: BorderRadius.all(Radius.circular(30))),
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Column(
         children: [
@@ -60,7 +59,7 @@ class _PostCardState extends State<PostCard> {
           ),
 
           Container(
-            height: 117,
+            height: 150,
             width: double.infinity,
             child: SingleChildScrollView(
               child: Padding(
@@ -86,7 +85,7 @@ class _PostCardState extends State<PostCard> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 15.0, left: 10),
+                  padding: const EdgeInsets.only(bottom: 20.0, left: 10),
                   child: Row(
                     children: [
                       BookmarkButton(

@@ -4,7 +4,6 @@ import 'package:map_launcher/map_launcher.dart';
 import 'package:vpost_2/utils/colors.dart';
 import 'package:vpost_2/widgets/post_card.dart';
 
-
 class LocationGet extends StatelessWidget {
   const LocationGet({
     super.key,
@@ -12,7 +11,6 @@ class LocationGet extends StatelessWidget {
   });
 
   final PostCard widget;
-
 
   @override
   Widget build(BuildContext context) {
@@ -26,15 +24,14 @@ class LocationGet extends StatelessWidget {
             Location locationConvert = locations[0];
             double latitude = locationConvert.latitude;
             double longitude = locationConvert.longitude;
-            List<AvailableMap> availableMaps =
-                await MapLauncher.installedMaps;
+            List<AvailableMap> availableMaps = await MapLauncher.installedMaps;
             await availableMaps.first.showMarker(
               coords: Coords(latitude, longitude),
               title: widget.snap["location"],
             );
           },
           child: Padding(
-            padding: const EdgeInsets.only(bottom: 5.0, left: 60),
+            padding: const EdgeInsets.only(bottom: 23.0, left: 60),
             child: Text(
               widget.snap['location'],
               style: const TextStyle(color: blueColor),
