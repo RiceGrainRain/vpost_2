@@ -25,7 +25,7 @@ class FireStoreMethods {
         profImage: profImage, 
         postUrl: photoUrl,
         uid: uid, 
-        bookmarks: [],
+        bookmarks: {},
       );
       _firestore.collection('posts').doc(postId).set(post.toJson());
       res = "success";

@@ -96,20 +96,23 @@ class _PostCardState extends State<PostCard> {
           ),
 
           Container(
+            height: 117,
             width: double.infinity,
             padding: const EdgeInsets.only(
               top: 8,
             ),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-              child: RichText(
-                text: TextSpan(
-                  style: const TextStyle(color: primaryColor),
-                  children: [
-                    TextSpan(
-                      text: ' ${widget.snap['description']}',
-                    ),
-                  ],
+              child: SingleChildScrollView(
+                child: RichText(
+                  text: TextSpan(
+                    style: const TextStyle(color: primaryColor),
+                    children: [
+                      TextSpan(
+                        text: ' ${widget.snap['description']}',
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -121,19 +124,11 @@ class _PostCardState extends State<PostCard> {
               padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 0),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
-                children: [Padding(
-                      padding: const EdgeInsets.only(top: 70.0, left: 20, right: 10),
-                      child: LikeButton(
-                        size: 26,
-                        likeBuilder: (isTapped) {
-                          return Icon(
-                            Icons.bookmark,
-                            color: isTapped ? Colors.amber : Colors.grey,
-                            size: 26,
-                          );
-                        },
-                      ),
-                    ),
+                children: [
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(CupertinoIcons.bookmark),
+                  ),
                   IconButton(
                     onPressed: () {},
                     icon: const Icon(CupertinoIcons.share),
@@ -143,7 +138,7 @@ class _PostCardState extends State<PostCard> {
                     alignment: Alignment.bottomRight,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 15),
+                          horizontal: 16, vertical: 10),
                       child: InkWell(
                         onTap: () async {
                           List<Location> locations = await locationFromAddress(

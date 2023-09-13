@@ -10,7 +10,7 @@ class Post {
   final String postId;
   final String profImage;
   final String uid;
-  final bookmarks;
+  final Map bookmarks;
 
   const Post({
     required this.title,
