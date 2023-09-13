@@ -11,6 +11,7 @@ class Post {
   final String profImage;
   final String uid;
   final bookmarks;
+  final int bookmarkCount;
 
   const Post({
     required this.title,
@@ -23,6 +24,7 @@ class Post {
     required this.postUrl,
     required this.uid,
     required this.bookmarks,
+    required this.bookmarkCount,
   });
 
   Map<String, dynamic> toJson() => {
@@ -36,6 +38,7 @@ class Post {
         'postUrl': postUrl,
         "uid": uid,
         "bookmarks": bookmarks,
+        "bookmarkCount": bookmarkCount,
       };
 
   static Post fromSnap(DocumentSnapshot snap) {
@@ -50,7 +53,8 @@ class Post {
       profImage: snapshot['profImage'],
       postUrl: snapshot['postUrl'],
       uid: snapshot['uid'],
-      bookmarks: snapshot['bookmarks'],
+      bookmarks: snapshot['bookmarks'], 
+      bookmarkCount: snapshot["bookmarkCount"],
     );
   }
 }

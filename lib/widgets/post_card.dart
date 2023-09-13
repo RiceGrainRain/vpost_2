@@ -1,15 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:map_launcher/map_launcher.dart';
 import 'package:provider/provider.dart';
 import 'package:vpost_2/models/user.dart' as model;
 import 'package:vpost_2/providers/user_provider.dart';
 import 'package:vpost_2/resources/firestore_methods.dart';
 import 'package:vpost_2/utils/colors.dart';
 import 'package:vpost_2/widgets/like_button.dart';
+import 'package:vpost_2/widgets/location_get.dart';
+import 'package:vpost_2/widgets/post_details.dart';
 
 class PostCard extends StatefulWidget {
   final snap;
@@ -52,62 +50,7 @@ class _PostCardState extends State<PostCard> {
               vertical: 4,
               horizontal: 25,
             ).copyWith(right: 0),
-            child: Row(
-              children: [
-                CircleAvatar(
-                  radius: 16,
-                  backgroundImage: NetworkImage(widget.snap['profImage']),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 8),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          widget.snap['title'],
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
-                        ),
-                        Text(
-                          'By ${widget.snap['displayName']} • ${DateFormat.yMMMd().format(widget.snap['datePublished'].toDate())}',
-                          style: const TextStyle(color: secondaryColor),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                IconButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) => Dialog(
-                        child: ListView(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shrinkWrap: true,
-                          children: [
-                            'Delete',
-                          ]
-                              .map(
-                                (e) => InkWell(
-                                  onTap: () {},
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 12, horizontal: 16),
-                                    child: Text(e),
-                                  ),
-                                ),
-                              )
-                              .toList(),
-                        ),
-                      ),
-                    );
-                  },
-                  icon: const Icon(Icons.more_vert),
-                ),
-              ],
-            ),
+            child: PostDetails(widget: widget),
           ),
           //image
           SizedBox(
@@ -121,7 +64,8 @@ class _PostCardState extends State<PostCard> {
             width: double.infinity,
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
                 child: RichText(
                   text: TextSpan(
                     style: const TextStyle(color: primaryColor),
@@ -167,34 +111,7 @@ class _PostCardState extends State<PostCard> {
                     ],
                   ),
                 ),
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.bottomRight,
-                    child: InkWell(
-                      onTap: () async {
-                        List<Location> locations =
-                            await locationFromAddress(widget.snap["location"]);
-                        Location locationConvert = locations[0];
-                        double latitude = locationConvert.latitude;
-                        double longitude = locationConvert.longitude;
-                        List<AvailableMap> availableMaps =
-                            await MapLauncher.installedMaps;
-                        await availableMaps.first.showMarker(
-                          coords: Coords(latitude, longitude),
-                          title: widget.snap["location"],
-                        );
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 5.0, left: 60),
-                        child: Text(
-                          widget.snap['location'],
-                          style: const TextStyle(color: blueColor),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+                LocationGet(widget: widget,),
               ],
             ),
           ),
@@ -203,3 +120,4 @@ class _PostCardState extends State<PostCard> {
     );
   }
 }
+
