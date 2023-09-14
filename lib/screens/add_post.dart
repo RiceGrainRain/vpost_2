@@ -29,6 +29,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _infoLinkController = TextEditingController();
+  final TextEditingController _hoursController = TextEditingController();
 
   void placeAutocomplate(String query) async {
     Uri uri = Uri.https(
@@ -114,6 +115,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
         displayName,
         profImage,
         _infoLinkController.text,
+        int.parse(_hoursController.text),
       );
       if (res == "success") {
         setState(() {
@@ -171,7 +173,6 @@ class _AddPostScreenState extends State<AddPostScreen> {
                       userProvider.getUser.photoUrl,
                       userProvider.getUser.userAge,
                     );
-                    placeAutocomplate("Dubai");
                   },
                   child: const Text(
                     "Next",
@@ -225,7 +226,6 @@ class _AddPostScreenState extends State<AddPostScreen> {
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.88,
                         child: MarkdownTextInput(
-                          
                           (String value) => setState(() => description = value),
                           description,
                           label: 'Description',
@@ -248,8 +248,9 @@ class _AddPostScreenState extends State<AddPostScreen> {
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.88,
                         child: TextField(
+                          keyboardType: TextInputType.number,
                           textAlignVertical: TextAlignVertical.center,
-                          controller: _titleController,
+                          controller: _hoursController,
                           decoration: const InputDecoration(
                             prefixIcon: Icon(Icons.arrow_forward_ios,
                                 color: primaryColor, size: 14),
