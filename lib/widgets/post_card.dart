@@ -5,7 +5,7 @@ import 'package:vpost_2/models/user.dart' as model;
 import 'package:vpost_2/providers/user_provider.dart';
 import 'package:vpost_2/resources/firestore_methods.dart';
 import 'package:vpost_2/utils/colors.dart';
-import 'package:vpost_2/widgets/like_button.dart';
+import 'package:vpost_2/widgets/bookmark_button.dart';
 import 'package:vpost_2/widgets/location_get.dart';
 import 'package:vpost_2/widgets/post_details.dart';
 
@@ -58,13 +58,35 @@ class _PostCardState extends State<PostCard> {
             child: Image.network(widget.snap['postUrl'], fit: BoxFit.cover),
           ),
 
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: Container(
+                width: 65,
+                height: 25,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  color: greenColor,
+                ),
+                child: Center(
+                  child: Text(
+                    "${widget.snap['hours']} hours ",
+                    style: const TextStyle(fontSize: 15, color: Colors.black),
+                  ),
+                ),
+              ),
+            ),
+          ),
+
+          //description
           Container(
-            height: 150,
+            height: 120,
             width: double.infinity,
             child: SingleChildScrollView(
               child: Padding(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
+                    const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
                 child: RichText(
                   text: TextSpan(
                     style: const TextStyle(color: primaryColor),
@@ -85,7 +107,7 @@ class _PostCardState extends State<PostCard> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 20.0, left: 10),
+                  padding: const EdgeInsets.only(left: 10),
                   child: Row(
                     children: [
                       BookmarkButton(
@@ -103,14 +125,16 @@ class _PostCardState extends State<PostCard> {
                         onPressed: () {},
                         icon: const Icon(
                           Icons.ios_share_outlined,
-                          size: 28,
+                          size: 36,
                           color: Colors.grey,
                         ),
                       ),
                     ],
                   ),
                 ),
-                LocationGet(widget: widget,),
+                LocationGet(
+                  widget: widget,
+                ),
               ],
             ),
           ),
@@ -119,4 +143,3 @@ class _PostCardState extends State<PostCard> {
     );
   }
 }
-
