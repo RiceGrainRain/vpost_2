@@ -39,7 +39,8 @@ dependencies:
   uuid: ^4.0.0
   map_launcher: ^2.5.0+1
   geocoding: ^2.1.0
-  like_button: ^2.0.5
+  markdown_editable_textinput: ^2.2.0
+  flutter_tagging_plus: ^4.0.2
   flutter:
     sdk: flutter
 
