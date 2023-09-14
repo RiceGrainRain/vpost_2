@@ -63,7 +63,7 @@ class _PostCardState extends State<PostCard> {
             child: Align(
               alignment: Alignment.topLeft,
               child: Container(
-                width: 65,
+                width: 70,
                 height: 25,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(10)),

@@ -32,7 +32,7 @@ class LocationGet extends StatelessWidget {
                 );
               },
               child: Padding(
-                padding: const EdgeInsets.only(bottom: 5.0, left: 50),
+                padding: const EdgeInsets.only(bottom: 5.0, left: 50, right: 15),
                 child: Text(
                   widget.snap['location'],
                   style: const TextStyle(color: blueColor, fontSize: 15, fontWeight: FontWeight.bold),
