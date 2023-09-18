@@ -20,11 +20,33 @@ class _HomeScreenState extends State<HomeScreen> {
   void searchFromFirebase(String query) async {
     final result = await FirebaseFirestore.instance
         .collection('posts')
-        .where('Title', arrayContains: query)
+        .where('title', arrayContains: query)
         .get();
 
+    final resultTags = await FirebaseFirestore.instance
+        .collection('posts')
+        .where(
+          'tags', // Search in 'tags' field
+          arrayContains: query,
+        )
+        .get();
+
+    final resultLocation = await FirebaseFirestore.instance
+        .collection('posts')
+        .where(
+          'location', // Search in 'location' field
+          arrayContains: query,
+        )
+        .get();
+
+    final List<DocumentSnapshot> combinedResults = [
+      ...result.docs,
+      ...resultTags.docs,
+      ...resultLocation.docs,
+    ];
+
     setState(() {
-      searchResult = result.docs.map((e) => e.data()).toList();
+      searchResult = combinedResults.map((e) => e.data()).toList();
     });
   }
 
@@ -114,10 +136,19 @@ class _HomeScreenState extends State<HomeScreen> {
             final Map<String, dynamic> data =
                 doc.data() as Map<String, dynamic>;
             final String title = data['title'].toString().toLowerCase();
+            final dynamic tagsData = data['tags'];
+            final List<dynamic> tags = (tagsData is String)
+                ? [tagsData]
+                : (tagsData ?? []); // Handle String or List
+            final String location = data['location'].toString().toLowerCase();
             final String query = _searchController.text.toLowerCase();
-            return title.contains(query);
-          }).toList();
 
+            // Check if any of the fields (title, tags, or location) contain the query
+            return title.contains(query) ||
+                tags.any(
+                    (tag) => tag.toString().toLowerCase().contains(query)) ||
+                location.contains(query);
+          }).toList();
           return Padding(
             padding: const EdgeInsets.all(16.0),
             child: ListView.builder(
@@ -130,7 +161,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: PostCard(
-                    snap: filteredPosts[index].data(), 
+                    snap: filteredPosts[index].data(),
                   ),
                 ),
               ),
