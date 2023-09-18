@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,19 +21,46 @@ class PostCard extends StatefulWidget {
 }
 
 class _PostCardState extends State<PostCard> {
+  Random random = new Random();
   bool isLiked = false;
   final currentUser = FirebaseAuth.instance.currentUser!;
+
+  void getColor() {
+
+  }
 
   @override
   void initState() {
     super.initState();
     isLiked = widget.snap['bookmarks'].contains(currentUser.uid);
+    randomColor();
   }
 
   void toggleLike() {
     setState(() {
       isLiked = !isLiked;
     });
+  }
+
+  void randomColor() {
+    int randomNumber = random.nextInt(3);
+    if(randomNumber == 0){
+      setState(() {
+        baseplateColor = randomColor1;
+      });
+    } else if(randomNumber == 1){
+      setState(() {
+        baseplateColor = randomColor2;
+      });
+    } else if(randomNumber == 2){
+      setState(() {
+        baseplateColor = randomColor3;
+      });
+    }else if(randomNumber == 3){
+      setState(() {
+        baseplateColor = randomColor4;
+      });
+    }
   }
 
   @override
@@ -59,40 +88,81 @@ class _PostCardState extends State<PostCard> {
             child: Image.network(widget.snap['postUrl'], fit: BoxFit.cover),
           ),
 
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Align(
-              alignment: Alignment.topLeft,
-              child: Container(
-                width: 75,
-                height: 25,
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  color: greenColor,
-                ),
-                child: Center(
-                  child: Row(
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 5.0),
-                        child: Icon(
-                          size: 18,
-                          CupertinoIcons.clock,
-                          color: Colors.black,
-                        ),
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: Container(
+                    height: 25,
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      color: greenColor,
+                    ),
+                    child: Center(
+                      child: Row(
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 5.0),
+                            child: Icon(
+                              size: 18,
+                              CupertinoIcons.clock,
+                              color: Colors.black,
+                            ),
+                          ),
+                          Text(
+                            "${widget.snap['hours']} hrs ",
+                            style: const TextStyle(
+                                fontSize: 15,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w400),
+                          ),
+                        ],
                       ),
-                      Text(
-                        "${widget.snap['hours']} hrs ",
-                        style: const TextStyle(
-                            fontSize: 15,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w400),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               ),
-            ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: Container(
+         
+                    height: 25,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(10)),
+                      color: baseplateColor,
+                    ),
+                    child: Center(
+                      child: Row(
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 5.0),
+                            child: Icon(
+                              size: 18,
+                              CupertinoIcons.pin,
+                              color: Colors.black,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 10.0),
+                            child: Text(
+                              "${widget.snap['tags']}",
+                              style: const TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w400),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
 
           //description

@@ -26,6 +26,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
   List<AutocompletePrediction> placePredictions = [];
   Uint8List? _file;
   bool isLoading = false;
+  final TextEditingController _tagController = TextEditingController();
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _infoLinkController = TextEditingController();
@@ -116,6 +117,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
         profImage,
         _infoLinkController.text,
         int.parse(_hoursController.text),
+        _tagController.text,
       );
       if (res == "success") {
         setState(() {
@@ -274,11 +276,11 @@ class _AddPostScreenState extends State<AddPostScreen> {
                         width: MediaQuery.of(context).size.width * 0.88,
                         child: TextField(
                           textAlignVertical: TextAlignVertical.center,
-                          controller: _titleController,
+                          controller: _tagController,
                           decoration: const InputDecoration(
                             prefixIcon: Icon(Icons.arrow_forward_ios,
                                 color: primaryColor, size: 14),
-                            hintText: 'Tags',
+                            hintText: 'Type of service... Eg. Senior Care',
                             border: InputBorder.none,
                           ),
                           maxLines: 1,

@@ -13,7 +13,7 @@ class Post {
   final bookmarks;
   final int bookmarkCount;
   final int hours;
-  final tags;
+  final String tags;
 
   const Post({
     required this.title,
