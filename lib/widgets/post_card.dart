@@ -43,7 +43,7 @@ class _PostCardState extends State<PostCard> {
   }
 
   void randomColor() {
-    int randomNumber = random.nextInt(3);
+    int randomNumber = random.nextInt(4);
     if(randomNumber == 0){
       setState(() {
         baseplateColor = randomColor1;
@@ -111,12 +111,15 @@ class _PostCardState extends State<PostCard> {
                               color: Colors.black,
                             ),
                           ),
-                          Text(
-                            "${widget.snap['hours']} hrs ",
-                            style: const TextStyle(
-                                fontSize: 15,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w400),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 10.0),
+                            child: Text(
+                              "${widget.snap['hours']} hrs ",
+                              style: const TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w400),
+                            ),
                           ),
                         ],
                       ),
