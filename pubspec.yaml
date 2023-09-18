@@ -40,7 +40,7 @@ dependencies:
   map_launcher: ^2.5.0+1
   geocoding: ^2.1.0
   markdown_editable_textinput: ^2.2.0
-  flutter_tagging_plus: ^4.0.2
+  textfield_tags: ^2.0.2
   flutter:
     sdk: flutter
 
