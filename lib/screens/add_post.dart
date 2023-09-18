@@ -26,6 +26,12 @@ class _AddPostScreenState extends State<AddPostScreen> {
   List<AutocompletePrediction> placePredictions = [];
   Uint8List? _file;
   bool isLoading = false;
+  bool isLocationListVisible = false;
+  final FocusNode _titleFocusNode = FocusNode();
+  final FocusNode _descriptionFocusNode = FocusNode();
+  final FocusNode _hoursFocusNode = FocusNode();
+  final FocusNode _tagFocusNode = FocusNode();
+  final FocusNode _infoLinkFocusNode = FocusNode();
   final TextEditingController _tagController = TextEditingController();
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
@@ -58,6 +64,42 @@ class _AddPostScreenState extends State<AddPostScreen> {
     super.dispose();
     _titleController.dispose();
     _descriptionController.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Add focus listeners
+    _titleFocusNode.addListener(() {
+      setState(() {
+        isLocationListVisible = false;
+      });
+    });
+
+    _descriptionFocusNode.addListener(() {
+      setState(() {
+        isLocationListVisible = false;
+      });
+    });
+
+    _hoursFocusNode.addListener(() {
+      setState(() {
+        isLocationListVisible = false;
+      });
+    });
+
+    _tagFocusNode.addListener(() {
+      setState(() {
+        isLocationListVisible = false;
+      });
+    });
+
+    _infoLinkFocusNode.addListener(() {
+      setState(() {
+        isLocationListVisible = true;
+      });
+    });
   }
 
   _selectImage(BuildContext parentContext) async {
@@ -204,6 +246,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.88,
                         child: TextField(
+                          focusNode: _titleFocusNode,
                           textAlignVertical: TextAlignVertical.center,
                           controller: _titleController,
                           decoration: const InputDecoration(
@@ -250,6 +293,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.88,
                         child: TextField(
+                          focusNode: _hoursFocusNode,
                           keyboardType: TextInputType.number,
                           textAlignVertical: TextAlignVertical.center,
                           controller: _hoursController,
@@ -275,6 +319,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.88,
                         child: TextField(
+                          focusNode: _tagFocusNode,
                           textAlignVertical: TextAlignVertical.center,
                           controller: _tagController,
                           decoration: const InputDecoration(
@@ -299,6 +344,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.88,
                         child: TextFormField(
+                          focusNode: _infoLinkFocusNode,
                           onChanged: (value) {
                             placeAutocomplate(value);
                           },
@@ -319,15 +365,19 @@ class _AddPostScreenState extends State<AddPostScreen> {
                     color: primaryColor,
                     thickness: 1,
                   ),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: placePredictions.length,
-                    itemBuilder: (context, index) => LocationTile(
-                        location: placePredictions[index].description!,
-                        press: () => setState(() {
-                              _infoLinkController.text =
-                                  placePredictions[index].description!;
-                            })),
+                  Visibility(
+                    visible: isLocationListVisible,
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: placePredictions.length,
+                      itemBuilder: (context, index) => LocationTile(
+                          location: placePredictions[index].description!,
+                          press: () => setState(() {
+                                _infoLinkController.text =
+                                    placePredictions[index].description!;
+                                isLocationListVisible = false;
+                              })),
+                    ),
                   ),
                 ],
               ),

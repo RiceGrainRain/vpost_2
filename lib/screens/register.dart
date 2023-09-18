@@ -69,14 +69,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (res != 'success') {
       showSnackBar(res, context);
     } else {
-       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const ResponsiveLayout(webScreenLayout: WebScreenLayout(), mobileScreenLayout: MobileScreenLayout(),),),
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const ResponsiveLayout(
+            webScreenLayout: WebScreenLayout(),
+            mobileScreenLayout: MobileScreenLayout(),
+          ),
+        ),
       );
     }
   }
 
-    void navigateToLogin() {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const LoginScreen()));
+  void navigateToLogin() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => const LoginScreen()));
   }
 
   @override
@@ -171,11 +177,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ),
 
           //confirm password
-          TextFieldInput(
-            textEditingController: _confirmPasswordController,
-            hintText: "Confirm Password",
-            textInputType: TextInputType.text,
-            isPass: true,
+          TextFormField(
+            controller: _confirmPasswordController,
+            decoration: InputDecoration(
+              hintText: "Add Location",
+              border: OutlineInputBorder(
+                  borderSide: Divider.createBorderSide(context)),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: Divider.createBorderSide(context)),
+              enabledBorder: OutlineInputBorder(
+                  borderSide: Divider.createBorderSide(context)),
+              filled: true,
+              contentPadding: const EdgeInsets.all(8.0),
+            ),
+            keyboardType: TextInputType.streetAddress,
+            obscureText: false,
           ),
 
           const SizedBox(
@@ -226,7 +242,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   child: const Text(
                     "Login Now",
                     style: TextStyle(
-                        fontWeight: FontWeight.bold,),
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               )
