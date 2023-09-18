@@ -14,12 +14,26 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final TextEditingController _searchController = TextEditingController();
+  List searchResult = [];
+
+  void searchFromFirebase(String query) async {
+    final result = await FirebaseFirestore.instance
+        .collection('posts')
+        .where('Title', arrayContains: query)
+        .get();
+
+    setState(() {
+      searchResult = result.docs.map((e) => e.data()).toList();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-    appBar: PreferredSize(
+      appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
         child: AppBar(
           backgroundColor: mobileBackgroundColor,
@@ -35,6 +49,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     borderRadius: BorderRadius.circular(7),
                     elevation: 1,
                     child: TextFormField(
+                      onChanged: (query) {
+                        searchFromFirebase(query);
+                      },
+                      controller: _searchController,
                       decoration: InputDecoration(
                         prefixIcon: InkWell(
                           onTap: () {},
@@ -62,14 +80,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         focusedBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(12)
-                          ),
-                          borderSide: BorderSide(
-                            color: secondaryColor,
-                            width: 1.5,
-                          )
-                        ),
+                            borderRadius: BorderRadius.all(Radius.circular(12)),
+                            borderSide: BorderSide(
+                              color: secondaryColor,
+                              width: 1.5,
+                            )),
                         hintText: 'Search Opportunities',
                         hintStyle: const TextStyle(
                           fontWeight: FontWeight.w500,
@@ -84,35 +99,45 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
-          body: StreamBuilder(
-            stream: FirebaseFirestore.instance.collection('posts').snapshots(),
-            builder: (context,
-                AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-              return Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: ListView.builder(
-                  itemCount: snapshot.data!.docs.length,
-                  itemBuilder: (ctx, index) => Container(
-                    margin: EdgeInsets.symmetric(
-                      horizontal: width > webScreenSize ? width * 0.3 : 0,
-                      vertical: width > webScreenSize ? 15 : 0,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16.0),
-                      child: PostCard(
-                        snap: snapshot.data!.docs[index].data(),
-                      ),
-                    ),
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance.collection('posts').snapshots(),
+        builder: (context,
+            AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          final List<DocumentSnapshot> filteredPosts =
+              snapshot.data!.docs.where((doc) {
+            final Map<String, dynamic> data =
+                doc.data() as Map<String, dynamic>;
+            final String title = data['title'].toString().toLowerCase();
+            final String query = _searchController.text.toLowerCase();
+            return title.contains(query);
+          }).toList();
+
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ListView.builder(
+              itemCount: filteredPosts.length,
+              itemBuilder: (ctx, index) => Container(
+                margin: EdgeInsets.symmetric(
+                  horizontal: width > webScreenSize ? width * 0.3 : 0,
+                  vertical: width > webScreenSize ? 15 : 0,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  child: PostCard(
+                    snap: filteredPosts[index].data(), 
                   ),
                 ),
-              );
-            },
-          ),
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 }

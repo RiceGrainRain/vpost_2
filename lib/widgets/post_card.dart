@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vpost_2/models/user.dart' as model;
@@ -63,16 +64,31 @@ class _PostCardState extends State<PostCard> {
             child: Align(
               alignment: Alignment.topLeft,
               child: Container(
-                width: 70,
+                width: 75,
                 height: 25,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(10)),
                   color: greenColor,
                 ),
                 child: Center(
-                  child: Text(
-                    "${widget.snap['hours']} hours ",
-                    style: const TextStyle(fontSize: 15, color: Colors.black),
+                  child: Row(
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 5.0),
+                        child: Icon(
+                          size: 18,
+                          CupertinoIcons.clock,
+                          color: Colors.black,
+                        ),
+                      ),
+                      Text(
+                        "${widget.snap['hours']} hrs ",
+                        style: const TextStyle(
+                            fontSize: 15,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w400),
+                      ),
+                    ],
                   ),
                 ),
               ),
