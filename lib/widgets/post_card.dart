@@ -1,15 +1,16 @@
+import 'dart:math';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:map_launcher/map_launcher.dart';
 import 'package:provider/provider.dart';
 import 'package:vpost_2/models/user.dart' as model;
 import 'package:vpost_2/providers/user_provider.dart';
 import 'package:vpost_2/resources/firestore_methods.dart';
 import 'package:vpost_2/utils/colors.dart';
-import 'package:vpost_2/widgets/like_button.dart';
+import 'package:vpost_2/widgets/bookmark_button.dart';
+import 'package:vpost_2/widgets/location_get.dart';
+import 'package:vpost_2/widgets/post_details.dart';
 
 class PostCard extends StatefulWidget {
   final snap;
@@ -20,13 +21,19 @@ class PostCard extends StatefulWidget {
 }
 
 class _PostCardState extends State<PostCard> {
+  Random random = new Random();
   bool isLiked = false;
   final currentUser = FirebaseAuth.instance.currentUser!;
+
+  void getColor() {
+
+  }
 
   @override
   void initState() {
     super.initState();
     isLiked = widget.snap['bookmarks'].contains(currentUser.uid);
+    randomColor();
   }
 
   void toggleLike() {
@@ -35,15 +42,35 @@ class _PostCardState extends State<PostCard> {
     });
   }
 
+  void randomColor() {
+    int randomNumber = random.nextInt(4);
+    if(randomNumber == 0){
+      setState(() {
+        baseplateColor = randomColor1;
+      });
+    } else if(randomNumber == 1){
+      setState(() {
+        baseplateColor = randomColor2;
+      });
+    } else if(randomNumber == 2){
+      setState(() {
+        baseplateColor = randomColor3;
+      });
+    }else if(randomNumber == 3){
+      setState(() {
+        baseplateColor = randomColor4;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final model.User user = Provider.of<UserProvider>(context).getUser;
     return Container(
-      height: 500,
-      decoration: BoxDecoration(
-          border: Border.all(color: Colors.white),
-          color: mobileBackgroundColor,
-          borderRadius: const BorderRadius.all(Radius.circular(30))),
+      height: 550,
+      decoration: const BoxDecoration(
+          color: mobileSearchColor,
+          borderRadius: BorderRadius.all(Radius.circular(30))),
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Column(
         children: [
@@ -52,62 +79,7 @@ class _PostCardState extends State<PostCard> {
               vertical: 4,
               horizontal: 25,
             ).copyWith(right: 0),
-            child: Row(
-              children: [
-                CircleAvatar(
-                  radius: 16,
-                  backgroundImage: NetworkImage(widget.snap['profImage']),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 8),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          widget.snap['title'],
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
-                        ),
-                        Text(
-                          'By ${widget.snap['displayName']} • ${DateFormat.yMMMd().format(widget.snap['datePublished'].toDate())}',
-                          style: const TextStyle(color: secondaryColor),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                IconButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) => Dialog(
-                        child: ListView(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shrinkWrap: true,
-                          children: [
-                            'Delete',
-                          ]
-                              .map(
-                                (e) => InkWell(
-                                  onTap: () {},
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 12, horizontal: 16),
-                                    child: Text(e),
-                                  ),
-                                ),
-                              )
-                              .toList(),
-                        ),
-                      ),
-                    );
-                  },
-                  icon: const Icon(Icons.more_vert),
-                ),
-              ],
-            ),
+            child: PostDetails(widget: widget),
           ),
           //image
           SizedBox(
@@ -116,12 +88,94 @@ class _PostCardState extends State<PostCard> {
             child: Image.network(widget.snap['postUrl'], fit: BoxFit.cover),
           ),
 
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: Container(
+                    height: 25,
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      color: greenColor,
+                    ),
+                    child: Center(
+                      child: Row(
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 5.0),
+                            child: Icon(
+                              size: 18,
+                              CupertinoIcons.clock,
+                              color: Colors.black,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 10.0),
+                            child: Text(
+                              "${widget.snap['hours']} hrs ",
+                              style: const TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w400),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: Container(
+         
+                    height: 25,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(10)),
+                      color: baseplateColor,
+                    ),
+                    child: Center(
+                      child: Row(
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 5.0),
+                            child: Icon(
+                              size: 18,
+                              CupertinoIcons.pin,
+                              color: Colors.black,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 10.0),
+                            child: Text(
+                              "${widget.snap['tags']}",
+                              style: const TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w400),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+
+          //description
           Container(
-            height: 117,
+            height: 120,
             width: double.infinity,
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
                 child: RichText(
                   text: TextSpan(
                     style: const TextStyle(color: primaryColor),
@@ -142,7 +196,7 @@ class _PostCardState extends State<PostCard> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 15.0, left: 10),
+                  padding: const EdgeInsets.only(left: 10),
                   child: Row(
                     children: [
                       BookmarkButton(
@@ -160,40 +214,15 @@ class _PostCardState extends State<PostCard> {
                         onPressed: () {},
                         icon: const Icon(
                           Icons.ios_share_outlined,
-                          size: 28,
+                          size: 36,
                           color: Colors.grey,
                         ),
                       ),
                     ],
                   ),
                 ),
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.bottomRight,
-                    child: InkWell(
-                      onTap: () async {
-                        List<Location> locations =
-                            await locationFromAddress(widget.snap["location"]);
-                        Location locationConvert = locations[0];
-                        double latitude = locationConvert.latitude;
-                        double longitude = locationConvert.longitude;
-                        List<AvailableMap> availableMaps =
-                            await MapLauncher.installedMaps;
-                        await availableMaps.first.showMarker(
-                          coords: Coords(latitude, longitude),
-                          title: widget.snap["location"],
-                        );
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 5.0, left: 60),
-                        child: Text(
-                          widget.snap['location'],
-                          style: const TextStyle(color: blueColor),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ),
-                  ),
+                LocationGet(
+                  widget: widget,
                 ),
               ],
             ),

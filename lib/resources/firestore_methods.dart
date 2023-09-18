@@ -7,8 +7,8 @@ import '../models/post.dart';
 class FireStoreMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<String> uploadPost(String title, String description, Uint8List file, String uid,
-      String displayName, String profImage, String location) async {
+  Future<String> uploadPost(String title, String description, Uint8List file,
+      String uid, String displayName, String profImage, String location, int hours, String tags) async {
     // asking uid here because we dont want to make extra calls to firebase auth when we can just get from our state management
     String res = "Some error occurred";
     try {
@@ -22,10 +22,14 @@ class FireStoreMethods {
         displayName: displayName,
         datePublished: DateTime.now(),
         postId: postId,
-        profImage: profImage, 
+        profImage: profImage,
         postUrl: photoUrl,
-        uid: uid, 
-        bookmarks: [],
+        uid: uid,
+        bookmarks: [], 
+        bookmarkCount: 0,
+        hours: hours,
+        tags: tags,
+        
       );
       _firestore.collection('posts').doc(postId).set(post.toJson());
       res = "success";
@@ -41,12 +45,14 @@ class FireStoreMethods {
       if (bookmarks.contains(uid)) {
         // if the likes list contains the user uid, we need to remove it
         _firestore.collection('posts').doc(postId).update({
-          'bookmarks': FieldValue.arrayRemove([uid])
+          'bookmarks': FieldValue.arrayRemove([uid]),
+          'bookmarkCount': (bookmarks.length),
         });
       } else {
         // else we need to add uid to the likes array
         _firestore.collection('posts').doc(postId).update({
-          'bookmarks': FieldValue.arrayUnion([uid])
+          'bookmarks': FieldValue.arrayUnion([uid]),
+          'bookmarkCount': (bookmarks.length -1),
         });
       }
       res = 'success';
@@ -55,9 +61,6 @@ class FireStoreMethods {
     }
     return res;
   }
-
-
-
 
   // Delete Post
   Future<String> deletePost(String postId) async {
@@ -69,33 +72,5 @@ class FireStoreMethods {
       res = err.toString();
     }
     return res;
-  }
-
-  Future<void> followUser(String uid, String followId) async {
-    try {
-      DocumentSnapshot snap =
-          await _firestore.collection('users').doc(uid).get();
-      List following = (snap.data()! as dynamic)['following'];
-
-      if (following.contains(followId)) {
-        await _firestore.collection('users').doc(followId).update({
-          'followers': FieldValue.arrayRemove([uid])
-        });
-
-        await _firestore.collection('users').doc(uid).update({
-          'following': FieldValue.arrayRemove([followId])
-        });
-      } else {
-        await _firestore.collection('users').doc(followId).update({
-          'followers': FieldValue.arrayUnion([uid])
-        });
-
-        await _firestore.collection('users').doc(uid).update({
-          'following': FieldValue.arrayUnion([followId])
-        });
-      }
-    } catch (e) {
-      if (kDebugMode) print(e.toString());
-    }
   }
 }

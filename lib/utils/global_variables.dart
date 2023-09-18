@@ -6,7 +6,6 @@ const webScreenSize = 600;
 const String apiKey = "AIzaSyDQkHNNxM5FwF81NXswGz0xAHKYetzIQs4";
 const homeScreenItems = [
   HomeScreen(),
-  Text('search'),
   AddPostScreen(),
   Text('bookmark'),
   Text('account')

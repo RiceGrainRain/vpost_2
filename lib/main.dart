@@ -31,6 +31,7 @@ class MyApp extends StatelessWidget {
         title: 'VPOST-2',
         theme: ThemeData.dark().copyWith(
           scaffoldBackgroundColor: mobileBackgroundColor,
+          colorScheme: const ColorScheme.dark().copyWith(secondary: Colors.grey),
         ),
         home: StreamBuilder(
             stream: FirebaseAuth.instance.authStateChanges(),
