@@ -16,9 +16,30 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  bool isLocationListVisible = false;
+  final FocusNode _emailFocusNode = FocusNode();
+  final FocusNode _passwordFocusNode = FocusNode();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Add focus listeners
+    _emailFocusNode.addListener(() {
+      setState(() {
+        isLocationListVisible = false;
+      });
+    });
+
+    _passwordFocusNode.addListener(() {
+      setState(() {
+        isLocationListVisible = false;
+      });
+    });
+  }
 
   @override
   void dispose() {
@@ -76,6 +97,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           //email
           TextFieldInput(
+            focusNode: _emailFocusNode,
               textEditingController: _emailController,
               hintText: "Email",
               textInputType: TextInputType.emailAddress),
@@ -86,6 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
           //password
           TextFieldInput(
+            focusNode: _passwordFocusNode,
             textEditingController: _passwordController,
             hintText: "Password",
             textInputType: TextInputType.text,

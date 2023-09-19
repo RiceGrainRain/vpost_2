@@ -24,7 +24,7 @@ class AuthMethods {
     required String firstName,
     required String lastName,
     required String userAge,
-    required String confirmPassword,
+    required String userLocation,
     required Uint8List file,
   }) async {
     String res = "Some error occurred";
@@ -35,7 +35,7 @@ class AuthMethods {
           firstName.isEmpty ||
           lastName.isEmpty ||
           userAge.isEmpty ||
-          confirmPassword == password) {
+          userLocation.isEmpty) {
         UserCredential cred = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
 
@@ -47,7 +47,8 @@ class AuthMethods {
           uid: cred.user!.uid,
           email: email,
           userAge: userAge,
-          photoUrl: photoUrl,
+          photoUrl: photoUrl, 
+          userLocation: userLocation,
         );
 
         //store users
