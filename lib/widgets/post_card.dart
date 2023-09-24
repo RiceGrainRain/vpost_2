@@ -25,15 +25,12 @@ class _PostCardState extends State<PostCard> {
   bool isLiked = false;
   final currentUser = FirebaseAuth.instance.currentUser!;
 
-  void getColor() {
-
-  }
+  void getColor() {}
 
   @override
   void initState() {
     super.initState();
     isLiked = widget.snap['bookmarks'].contains(currentUser.uid);
-    randomColor(widget.snap['tagColor']);
   }
 
   void toggleLike() {
@@ -43,19 +40,19 @@ class _PostCardState extends State<PostCard> {
   }
 
   void randomColor(randomNumber) {
-    if(randomNumber == 0){
+    if (randomNumber == 0) {
       setState(() {
         baseplateColor = randomColor1;
       });
-    } else if(randomNumber == 1){
+    } else if (randomNumber == 1) {
       setState(() {
         baseplateColor = randomColor2;
       });
-    } else if(randomNumber == 2){
+    } else if (randomNumber == 2) {
       setState(() {
         baseplateColor = randomColor3;
       });
-    }else if(randomNumber == 3){
+    } else if (randomNumber == 3) {
       setState(() {
         baseplateColor = randomColor4;
       });
@@ -64,6 +61,7 @@ class _PostCardState extends State<PostCard> {
 
   @override
   Widget build(BuildContext context) {
+    randomColor(widget.snap['tagColor']);
     final model.User user = Provider.of<UserProvider>(context).getUser;
     return Container(
       height: 550,
@@ -131,7 +129,6 @@ class _PostCardState extends State<PostCard> {
                 child: Align(
                   alignment: Alignment.topLeft,
                   child: Container(
-         
                     height: 25,
                     decoration: BoxDecoration(
                       borderRadius: const BorderRadius.all(Radius.circular(10)),
