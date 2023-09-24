@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -22,6 +23,8 @@ class AddPostScreen extends StatefulWidget {
 }
 
 class _AddPostScreenState extends State<AddPostScreen> {
+  Random random = new Random();
+  
   String description = 'Add a description';
   List<AutocompletePrediction> placePredictions = [];
   Uint8List? _file;
@@ -107,7 +110,9 @@ class _AddPostScreenState extends State<AddPostScreen> {
     });
     // start the loading
     try {
+      
       // upload to storage and db
+      int randomNumber = random.nextInt(4);
       String res = await FireStoreMethods().uploadPost(
         _titleController.text,
         _descriptionController.text,
@@ -118,6 +123,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
         _infoLinkController.text,
         int.parse(_hoursController.text),
         _tagController.text,
+        randomNumber,
       );
       if (res == "success") {
         setState(() {

@@ -33,7 +33,7 @@ class _PostCardState extends State<PostCard> {
   void initState() {
     super.initState();
     isLiked = widget.snap['bookmarks'].contains(currentUser.uid);
-    randomColor();
+    randomColor(widget.snap['tagColor']);
   }
 
   void toggleLike() {
@@ -42,8 +42,7 @@ class _PostCardState extends State<PostCard> {
     });
   }
 
-  void randomColor() {
-    int randomNumber = random.nextInt(4);
+  void randomColor(randomNumber) {
     if(randomNumber == 0){
       setState(() {
         baseplateColor = randomColor1;
@@ -170,7 +169,6 @@ class _PostCardState extends State<PostCard> {
 
           //description
           Container(
-            height: 120,
             width: double.infinity,
             child: SingleChildScrollView(
               child: Padding(
@@ -194,6 +192,7 @@ class _PostCardState extends State<PostCard> {
           Expanded(
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Padding(
                   padding: const EdgeInsets.only(left: 10),
