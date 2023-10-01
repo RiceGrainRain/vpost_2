@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:vpost_2/utils/colors.dart';
+import 'package:vpost_2/widgets/bookmark_section_user.dart';
 import 'package:vpost_2/widgets/edit_profile_button.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -88,11 +89,8 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
             child: TabBarView(
               controller: _tabController,
               children: [
-                // Content for Section 1
-                Center(child: Text('Section 1 Content')),
-                // Content for Section 2
+                BookmarkSection(),
                 Center(child: Text('Section 2 Content')),
-                // Content for Section 3
                 Center(child: Text('Section 3 Content')),
               ],
             ),
@@ -128,7 +126,6 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
 
   @override
   void dispose() {
-    // Dispose of the TabController when not needed to prevent memory leaks.
     _tabController.dispose();
     super.dispose();
   }
