@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:vpost_2/utils/colors.dart';
-import 'package:vpost_2/widgets/bookmark_section_user.dart';
+import 'package:vpost_2/widgets/bookmark_section.dart';
 import 'package:vpost_2/widgets/edit_profile_button.dart';
 
 class ProfileScreen extends StatefulWidget {

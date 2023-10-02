@@ -25,8 +25,6 @@ class _PostCardState extends State<PostCard> {
   bool isLiked = false;
   final currentUser = FirebaseAuth.instance.currentUser!;
 
-  void getColor() {}
-
   @override
   void initState() {
     super.initState();
@@ -210,7 +208,7 @@ class _PostCardState extends State<PostCard> {
                         onPressed: () {},
                         icon: const Icon(
                           Icons.ios_share_outlined,
-                          size: 36,
+                          size: 30,
                           color: Colors.grey,
                         ),
                       ),

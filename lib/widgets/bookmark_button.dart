@@ -14,7 +14,7 @@ class BookmarkButton extends StatelessWidget {
       icon: Icon(
         isLiked ? Icons.bookmark: Icons.bookmark_border,
         color: isLiked? Colors.amber: secondaryColor,
-        size: isLiked? 38: 37, 
+        size: isLiked? 32: 30, 
       ),
     );
   }
