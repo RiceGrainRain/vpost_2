@@ -57,6 +57,7 @@ class PostDetails extends StatelessWidget {
                           onTap: () {
                             FireStoreMethods()
                                 .deletePost(widget.snap['postId']);
+                            Navigator.pop(context);
                           },
                           child: Container(
                             padding: const EdgeInsets.symmetric(

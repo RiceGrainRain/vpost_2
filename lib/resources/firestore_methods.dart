@@ -29,9 +29,34 @@ class FireStoreMethods {
         hours: hours,
         tags: tags,
         tagColor: tagColor,
+        checks: [],
+        checkCount: 0,
       );
       _firestore.collection('posts').doc(postId).set(post.toJson());
       res = "success";
+    } catch (err) {
+      res = err.toString();
+    }
+    return res;
+  }
+
+  Future<String> checkPost(String postId, String uid, List checks) async {
+    String res = "Some error occurred";
+    try {
+      if (checks.contains(uid)) {
+        // if the likes list contains the user uid, we need to remove it
+        _firestore.collection('posts').doc(postId).update({
+          'checks': FieldValue.arrayRemove([uid]),
+          'checkCount': (checks.length -1),
+        });
+      } else {
+        // else we need to add uid to the likes array
+        _firestore.collection('posts').doc(postId).update({
+          'checks': FieldValue.arrayUnion([uid]),
+          'checkCount': (checks.length +1),
+        });
+      }
+      res = 'success';
     } catch (err) {
       res = err.toString();
     }
@@ -45,13 +70,13 @@ class FireStoreMethods {
         // if the likes list contains the user uid, we need to remove it
         _firestore.collection('posts').doc(postId).update({
           'bookmarks': FieldValue.arrayRemove([uid]),
-          'bookmarkCount': (bookmarks.length),
+          'bookmarkCount': (bookmarks.length -1),
         });
       } else {
         // else we need to add uid to the likes array
         _firestore.collection('posts').doc(postId).update({
           'bookmarks': FieldValue.arrayUnion([uid]),
-          'bookmarkCount': (bookmarks.length -1),
+          'bookmarkCount': (bookmarks.length +1),
         });
       }
       res = 'success';

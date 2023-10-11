@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:vpost_2/utils/colors.dart';
 
-class BookmarkButton extends StatefulWidget {
-  final bool isLiked;
+class CheckmarkButton extends StatefulWidget {
+  final bool isChecked;
   final VoidCallback? onPressed;
 
-  BookmarkButton({
+  CheckmarkButton({
     Key? key,
-    required this.isLiked,
+    required this.isChecked,
     required this.onPressed,
   }) : super(key: key);
 
   @override
-  _BookmarkButtonState createState() => _BookmarkButtonState();
+  _CheckmarkButtonState createState() => _CheckmarkButtonState();
 }
 
-class _BookmarkButtonState extends State<BookmarkButton>
+class _CheckmarkButtonState extends State<CheckmarkButton>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _sizeAnimation;
@@ -31,13 +31,13 @@ class _BookmarkButtonState extends State<BookmarkButton>
     );
 
     _sizeAnimation = Tween<double>(
-      begin: widget.isLiked ? 32.0 : 30.0,
-      end: widget.isLiked ? 30.0 : 32.0,
+      begin: widget.isChecked ? 32.0 : 30.0,
+      end: widget.isChecked ? 30.0 : 32.0,
     ).animate(_controller);
 
     _colorAnimation = ColorTween(
-      begin: widget.isLiked ? Colors.amber : secondaryColor,
-      end: widget.isLiked ? secondaryColor : Colors.amber,
+      begin: widget.isChecked ? greenColor : secondaryColor,
+      end: widget.isChecked ? secondaryColor : greenColor,
     ).animate(_controller);
   }
 
@@ -62,7 +62,7 @@ class _BookmarkButtonState extends State<BookmarkButton>
             }
           },
           icon: Icon(
-            widget.isLiked ? Icons.bookmark : Icons.bookmark_border,
+            widget.isChecked ? Icons.check_box : Icons.check_box_outline_blank,
             color: _colorAnimation.value,
             size: _sizeAnimation.value,
           ),

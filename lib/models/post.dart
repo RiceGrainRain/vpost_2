@@ -15,6 +15,8 @@ class Post {
   final int hours;
   final String tags;
   final int tagColor;
+  final checks;
+  final int checkCount;
 
   const Post({
     required this.title,
@@ -31,6 +33,8 @@ class Post {
     required this.hours,
     required this.tags,
     required this.tagColor,
+    required this.checks,
+    required this.checkCount
   });
 
   Map<String, dynamic> toJson() => {
@@ -48,6 +52,8 @@ class Post {
         "hours": hours,
         "tags": tags,
         "tagColor": tagColor,
+        "checks": checks,
+        "checkCount": checks,
       };
 
   static Post fromSnap(DocumentSnapshot snap) {
@@ -67,6 +73,8 @@ class Post {
       hours: snapshot['hours'],
       tags: snapshot['tags'],
       tagColor: snapshot['tagColor'],
+      checks: snapshot['checks'],
+      checkCount: snapshot['checkCount'],
     );
   }
 }

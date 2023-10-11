@@ -11,6 +11,7 @@ import 'package:vpost_2/providers/user_provider.dart';
 import 'package:vpost_2/resources/firestore_methods.dart';
 import 'package:vpost_2/utils/colors.dart';
 import 'package:vpost_2/widgets/bookmark_button.dart';
+import 'package:vpost_2/widgets/checkmark_button.dart';
 
 class BookmarkCard extends StatefulWidget {
   final snap;
@@ -23,17 +24,25 @@ class BookmarkCard extends StatefulWidget {
 class _BookmarkCardState extends State<BookmarkCard> {
   Random random = new Random();
   bool isLiked = false;
+  bool isChecked = false;
   final currentUser = FirebaseAuth.instance.currentUser!;
 
   @override
   void initState() {
     super.initState();
     isLiked = widget.snap['bookmarks'].contains(currentUser.uid);
+    isChecked = widget.snap['checks'].contains(currentUser.uid);
   }
 
   void toggleLike() {
     setState(() {
       isLiked = !isLiked;
+    });
+  }
+
+  void toggleCheck() {
+    setState(() {
+      isChecked = !isChecked;
     });
   }
 
@@ -214,6 +223,17 @@ class _BookmarkCardState extends State<BookmarkCard> {
                           color: Colors.grey,
                         ),
                       ),
+                      CheckmarkButton(
+                        onPressed: () {
+                          FireStoreMethods().checkPost(
+                            widget.snap['postId'].toString(),
+                            user.uid,
+                            widget.snap['checks'],
+                          );
+                          toggleCheck();
+                        },
+                        isChecked: isChecked,
+                      )
                     ],
                   ),
                 ),
