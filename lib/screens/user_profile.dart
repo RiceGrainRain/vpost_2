@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:vpost_2/utils/colors.dart';
 import 'package:vpost_2/widgets/bookmark_section.dart';
 import 'package:vpost_2/widgets/edit_profile_button.dart';
+import 'package:vpost_2/widgets/user_posts_section.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -11,13 +14,48 @@ class ProfileScreen extends StatefulWidget {
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateMixin {
+class _ProfileScreenState extends State<ProfileScreen>
+    with TickerProviderStateMixin {
   late TabController _tabController;
+  final currentUser = FirebaseAuth.instance.currentUser!;
+  int postCount = 0;
+  int bookmarkCount = 0;
+  int serviceCount = 0;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
+
+    FirebaseFirestore.instance
+        .collection('posts')
+        .where('uid', isEqualTo: currentUser.uid)
+        .snapshots()
+        .listen((QuerySnapshot snapshot) {
+      setState(() {
+        postCount = snapshot.docs.length;
+      });
+    });
+
+    FirebaseFirestore.instance
+        .collection('posts')
+        .where('bookmarks', arrayContains: currentUser.uid)
+        .snapshots()
+        .listen((QuerySnapshot snapshot) {
+      setState(() {
+        bookmarkCount = snapshot.docs.length;
+      });
+    });
+
+     FirebaseFirestore.instance
+        .collection('posts')
+        .where('checks', arrayContains: currentUser.uid)
+        .snapshots()
+        .listen((QuerySnapshot snapshot) {
+      setState(() {
+        serviceCount = snapshot.docs.length;
+      });
+    });
   }
 
   @override
@@ -50,9 +88,9 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              buildStatColumn(20, "Posts"),
-                              buildStatColumn(40, "Bookmarks"),
-                              buildStatColumn(100, "hours"),
+                              buildStatColumn(postCount, "Posts"),
+                              buildStatColumn(bookmarkCount, "Bookmarks"),
+                              buildStatColumn(serviceCount, "Services"),
                             ],
                           ),
                           Row(
@@ -79,8 +117,10 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
           TabBar(
             controller: _tabController,
             tabs: const [
-              Tab(icon: Icon(CupertinoIcons.bookmark_fill),),
-              Tab(icon: Icon(CupertinoIcons.graph_square)),
+              Tab(
+                icon: Icon(CupertinoIcons.bookmark_fill),
+              ),
+              Tab(icon: Icon(CupertinoIcons.square_favorites)),
               Tab(icon: Icon(CupertinoIcons.settings)),
             ],
           ),
@@ -90,7 +130,7 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
               controller: _tabController,
               children: [
                 BookmarkSection(),
-                Center(child: Text('Section 2 Content')),
+                UserPostsSection(),
                 Center(child: Text('Section 3 Content')),
               ],
             ),
