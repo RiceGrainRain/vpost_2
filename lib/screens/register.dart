@@ -1,8 +1,6 @@
 import 'dart:typed_data';
 import 'package:image_picker/image_picker.dart';
-import 'package:vpost_2/responsive/mobile_screen_layout.dart';
-import 'package:vpost_2/responsive/responsive_layout.dart';
-import 'package:vpost_2/responsive/web_layout.dart';
+import 'package:vpost_2/screens/location.dart';
 import 'package:vpost_2/screens/login.dart';
 import 'package:vpost_2/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -68,9 +66,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (res != 'success') {
       showSnackBar(res, context);
     } else {
-       Navigator.of(context).pushReplacement(
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const UserLocationUpdate()));
+/*        Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => const ResponsiveLayout(webScreenLayout: WebScreenLayout(), mobileScreenLayout: MobileScreenLayout(),),),
-      );
+      ); */
     }
   }
 

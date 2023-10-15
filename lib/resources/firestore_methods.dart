@@ -97,4 +97,17 @@ class FireStoreMethods {
     }
     return res;
   }
+
+   Future<String> updateLocation(String uid, String newLocation) async {
+    String res = "Some error occurred";
+    try {
+      await _firestore.collection('users').doc(uid).update({
+        'location': newLocation,
+      });
+      res = 'success';
+    } catch (err) {
+      res = err.toString();
+    }
+    return res;
+  }
 }

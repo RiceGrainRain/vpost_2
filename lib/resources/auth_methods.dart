@@ -46,7 +46,8 @@ class AuthMethods {
           uid: cred.user!.uid,
           email: email,
           userAge: userAge,
-          photoUrl: photoUrl,
+          photoUrl: photoUrl, 
+          location: '',
         );
 
         //store users

@@ -117,6 +117,8 @@ class _ProfileScreenState extends State<ProfileScreen>
           // TabBar
           TabBar(
             controller: _tabController,
+            indicatorColor: greenColor,
+            indicatorWeight: 3.0,
             tabs: const [
               Tab(
                 icon: Icon(CupertinoIcons.bookmark_fill),
