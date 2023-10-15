@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:vpost_2/utils/colors.dart';
 import 'package:vpost_2/widgets/post_card.dart';
@@ -122,33 +121,31 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('posts').snapshots(),
-        builder: (context,
-            AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+        stream: FirebaseFirestore.instance
+            .collection('posts')
+            .orderBy('datePublished', descending: true) // Order by timestamp in descending order (most recent first)
+            .snapshots(),
+        builder: (context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           }
 
-          final List<DocumentSnapshot> filteredPosts =
-              snapshot.data!.docs.where((doc) {
-            final Map<String, dynamic> data =
-                doc.data() as Map<String, dynamic>;
+          final List<DocumentSnapshot> filteredPosts = snapshot.data!.docs.where((doc) {
+            final Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
             final String title = data['title'].toString().toLowerCase();
             final dynamic tagsData = data['tags'];
-            final List<dynamic> tags = (tagsData is String)
-                ? [tagsData]
-                : (tagsData ?? []); // Handle String or List
+            final List<dynamic> tags = (tagsData is String) ? [tagsData] : (tagsData ?? []); // Handle String or List
             final String location = data['location'].toString().toLowerCase();
             final String query = _searchController.text.toLowerCase();
 
             // Check if any of the fields (title, tags, or location) contain the query
             return title.contains(query) ||
-                tags.any(
-                    (tag) => tag.toString().toLowerCase().contains(query)) ||
+                tags.any((tag) => tag.toString().toLowerCase().contains(query)) ||
                 location.contains(query);
           }).toList();
+
           return Padding(
             padding: const EdgeInsets.all(16.0),
             child: ListView.builder(
