@@ -10,8 +10,8 @@ import 'package:vpost_2/models/user.dart' as model;
 import 'package:vpost_2/providers/user_provider.dart';
 import 'package:vpost_2/resources/firestore_methods.dart';
 import 'package:vpost_2/utils/colors.dart';
-import 'package:vpost_2/widgets/bookmark_button.dart';
-import 'package:vpost_2/widgets/checkmark_button.dart';
+import 'package:vpost_2/widgets/user_profile/bookmark_button.dart';
+import 'package:vpost_2/widgets/user_profile/checkmark_button.dart';
 
 class BookmarkCard extends StatefulWidget {
   final snap;

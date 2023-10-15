@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vpost_2/models/user.dart' as model;
-import 'package:vpost_2/widgets/bookmark_card.dart';
-import '../providers/user_provider.dart';
+import 'package:vpost_2/widgets/user_profile/bookmark_card.dart';
+import '../../providers/user_provider.dart';
 
 class BookmarkSection extends StatefulWidget {
   @override

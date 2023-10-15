@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:map_launcher/map_launcher.dart';
 import 'package:vpost_2/utils/colors.dart';
-import 'package:vpost_2/widgets/post_card.dart';
+import 'package:vpost_2/widgets/home/post_card.dart';
 
 class LocationGet extends StatelessWidget {
   const LocationGet({

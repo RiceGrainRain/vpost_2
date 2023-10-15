@@ -45,6 +45,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       _image = im;
     });
   }
+
   void signUpUser() async {
     setState(() {
       _isLoading = true;
@@ -81,39 +82,46 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.all(32),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+      body: SafeArea(
+          child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 32),
+        width: double.infinity,
+        child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+          Flexible(flex: 2, child: Container()),
+          const SizedBox(
+            height: 20,
+          ),
+
+          const SizedBox(height: 40),
+
+          Stack(
             children: [
-              const SizedBox(height: 20),
-
-              Stack(
-                children: [
-                  _image != null
-                      ? CircleAvatar(
-                          radius: 64,
-                          backgroundImage: MemoryImage(_image!),
-                        )
-                      : const CircleAvatar(
-                          radius: 64,
-                          backgroundImage: NetworkImage("https://i.stack.imgur.com/l60Hf.png"),
-                        ),
-                  Positioned(
-                    bottom: -10,
-                    left: 80,
-                    child: IconButton(
-                      onPressed: selectImage,
-                      icon: const Icon(Icons.add_a_photo),
+              _image != null
+                  ? CircleAvatar(
+                      radius: 64,
+                      backgroundImage: MemoryImage(_image!),
+                    )
+                  : const CircleAvatar(
+                      radius: 64,
+                      backgroundImage:
+                          NetworkImage("https://i.stack.imgur.com/l60Hf.png"),
                     ),
-                  ),
-                ],
+              Positioned(
+                bottom: -10,
+                left: 80,
+                child: IconButton(
+                  onPressed: selectImage,
+                  icon: const Icon(Icons.add_a_photo),
+                ),
               ),
+            ],
+          ),
 
-              const SizedBox(height: 20),
+          const SizedBox(
+            height: 20,
+          ),
 
-TextFieldInput(
+          TextFieldInput(
               textEditingController: _firstNameController,
               hintText: "First Name",
               textInputType: TextInputType.text),
@@ -174,54 +182,58 @@ TextFieldInput(
             height: 20,
           ),
 
-
-              const SizedBox(height: 20),
-
-              InkWell(
-                onTap: signUpUser,
-                child: Container(
-                  alignment: Alignment.center,
-                  width: double.infinity,
-                  padding: const EdgeInsets.symmetric(vertical: 22),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.circular(4),
-                    color: Colors.green,
-                  ),
-                  child: _isLoading
-                      ? const Center(
-                          child: CircularProgressIndicator(
-                            color: primaryColor, // Use your color
-                          ),
-                        )
-                      : const Text(
-                          "Register",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                ),
+          //Register
+          InkWell(
+            onTap: signUpUser,
+            child: Container(
+              alignment: Alignment.center,
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(vertical: 22),
+              decoration: const ShapeDecoration(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(4))),
+                color: greenColor,
               ),
-
-              const SizedBox(height: 12),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text("Have an account already?"),
-                  GestureDetector(
-                    onTap: navigateToLogin,
-                    child: const Text(
-                      "Login Now",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
+              child: _isLoading
+                  ? const Center(
+                      child: CircularProgressIndicator(
+                        color: primaryColor,
                       ),
+                    )
+                  : const Text(
+                      "Register",
+                      style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                  )
-                ],
+            ),
+          ),
+
+          const SizedBox(
+            height: 12,
+          ),
+          Flexible(flex: 2, child: Container()),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: const Text("Have an account already?"),
               ),
+              GestureDetector(
+                onTap: navigateToLogin,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: const Text(
+                    "Login Now",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,),
+                  ),
+                ),
+              )
             ],
           ),
-        ),
-      ),
+        ]),
+      )),
     );
   }
 }

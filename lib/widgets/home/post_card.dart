@@ -8,9 +8,9 @@ import 'package:vpost_2/models/user.dart' as model;
 import 'package:vpost_2/providers/user_provider.dart';
 import 'package:vpost_2/resources/firestore_methods.dart';
 import 'package:vpost_2/utils/colors.dart';
-import 'package:vpost_2/widgets/bookmark_button.dart';
-import 'package:vpost_2/widgets/location_get.dart';
-import 'package:vpost_2/widgets/post_details.dart';
+import 'package:vpost_2/widgets/user_profile/bookmark_button.dart';
+import 'package:vpost_2/widgets/home/location_get.dart';
+import 'package:vpost_2/widgets/home/post_details.dart';
 
 class PostCard extends StatefulWidget {
   final snap;

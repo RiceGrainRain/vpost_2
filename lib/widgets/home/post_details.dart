@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:vpost_2/resources/firestore_methods.dart';
 import 'package:vpost_2/utils/colors.dart';
-import 'package:vpost_2/widgets/post_card.dart';
+import 'package:vpost_2/widgets/home/post_card.dart';
 
 class PostDetails extends StatelessWidget {
   const PostDetails({

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:vpost_2/utils/colors.dart';
-import 'package:vpost_2/widgets/post_card.dart';
+import 'package:vpost_2/widgets/home/post_card.dart';
 
 import '../utils/dimensions.dart';
 

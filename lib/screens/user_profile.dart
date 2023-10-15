@@ -3,9 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:vpost_2/utils/colors.dart';
-import 'package:vpost_2/widgets/bookmark_section.dart';
-import 'package:vpost_2/widgets/edit_profile_button.dart';
-import 'package:vpost_2/widgets/user_posts_section.dart';
+import 'package:vpost_2/widgets/user_profile/bookmark_section.dart';
+import 'package:vpost_2/widgets/user_profile/edit_profile_button.dart';
+import 'package:vpost_2/widgets/user_profile/settings_section.dart';
+import 'package:vpost_2/widgets/user_profile/user_posts_section.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -131,7 +132,7 @@ class _ProfileScreenState extends State<ProfileScreen>
               children: [
                 BookmarkSection(),
                 UserPostsSection(),
-                Center(child: Text('Section 3 Content')),
+                const SettingsSection(),
               ],
             ),
           ),

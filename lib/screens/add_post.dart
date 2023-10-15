@@ -7,7 +7,7 @@ import 'package:markdown_editable_textinput/markdown_text_input.dart';
 import 'package:provider/provider.dart';
 import 'package:vpost_2/resources/autocomplate_prediction.dart';
 import 'package:vpost_2/resources/place_auto_complate_response.dart';
-import 'package:vpost_2/widgets/location_tile.dart';
+import 'package:vpost_2/widgets/home/location_tile.dart';
 import '../providers/user_provider.dart';
 import '../resources/firestore_methods.dart';
 import '../resources/maps_network_method.dart';
