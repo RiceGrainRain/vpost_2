@@ -89,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         filled: true,
-                        fillColor: webBackgroundColor,
+                        fillColor: mobileBackgroundColor,
                         contentPadding: const EdgeInsets.only(top: 10),
                         border: const OutlineInputBorder(
                           borderRadius: BorderRadius.all(

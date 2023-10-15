@@ -31,6 +31,7 @@ class PostDetails extends StatelessWidget {
                 Text(
                   widget.snap['title'],
                   style: const TextStyle(
+                      color: primaryColor,
                       fontWeight: FontWeight.bold, fontSize: 18),
                 ),
                 Text(
