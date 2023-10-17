@@ -124,26 +124,31 @@ class _HomeScreenState extends State<HomeScreen> {
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('posts')
-            .orderBy('datePublished', descending: true) // Order by timestamp in descending order (most recent first)
+            .orderBy('datePublished',
+                descending:
+                    true) // Order by timestamp in descending order (most recent first)
             .snapshots(),
-        builder: (context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+        builder: (context,
+            AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           }
-
-          final List<DocumentSnapshot> filteredPosts = snapshot.data!.docs.where((doc) {
-            final Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+          final List<DocumentSnapshot> filteredPosts =
+              snapshot.data!.docs.where((doc) {
+            final Map<String, dynamic> data =
+                doc.data() as Map<String, dynamic>;
             final String title = data['title'].toString().toLowerCase();
             final dynamic tagsData = data['tags'];
-            final List<dynamic> tags = (tagsData is String) ? [tagsData] : (tagsData ?? []); // Handle String or List
+            final List<dynamic> tags = (tagsData is String)
+                ? [tagsData]
+                : (tagsData ?? []); // Handle String or List
             final String location = data['location'].toString().toLowerCase();
             final String query = _searchController.text.toLowerCase();
-
-            // Check if any of the fields (title, tags, or location) contain the query
             return title.contains(query) ||
-                tags.any((tag) => tag.toString().toLowerCase().contains(query)) ||
+                tags.any(
+                    (tag) => tag.toString().toLowerCase().contains(query)) ||
                 location.contains(query);
           }).toList();
 
