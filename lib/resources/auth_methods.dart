@@ -48,6 +48,8 @@ class AuthMethods {
           userAge: userAge,
           photoUrl: photoUrl, 
           location: '',
+          userLat: 0,
+          userLong: 0,
         );
 
         //store users

@@ -124,6 +124,8 @@ class _AddPostScreenState extends State<AddPostScreen> {
         int.parse(_hoursController.text),
         _tagController.text,
         randomNumber,
+        0,
+        0,
       );
       if (res == "success") {
         setState(() {

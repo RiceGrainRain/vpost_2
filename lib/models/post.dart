@@ -17,25 +17,29 @@ class Post {
   final int tagColor;
   final checks;
   final int checkCount;
+  final double postLat;
+  final double postLong;
 
-  const Post({
-    required this.title,
-    required this.description,
-    required this.location,
-    required this.displayName,
-    required this.datePublished,
-    required this.postId,
-    required this.profImage,
-    required this.postUrl,
-    required this.uid,
-    required this.bookmarks,
-    required this.bookmarkCount,
-    required this.hours,
-    required this.tags,
-    required this.tagColor,
-    required this.checks,
-    required this.checkCount
-  });
+  const Post(
+      {required this.title,
+      required this.description,
+      required this.location,
+      required this.displayName,
+      required this.datePublished,
+      required this.postId,
+      required this.profImage,
+      required this.postUrl,
+      required this.uid,
+      required this.bookmarks,
+      required this.bookmarkCount,
+      required this.hours,
+      required this.tags,
+      required this.tagColor,
+      required this.checks,
+      required this.checkCount,
+      required this.postLat,
+      required this.postLong,
+      });
 
   Map<String, dynamic> toJson() => {
         'title': title,
@@ -54,6 +58,8 @@ class Post {
         "tagColor": tagColor,
         "checks": checks,
         "checkCount": checks,
+        "postLat": postLat,
+        "postLong": postLong,
       };
 
   static Post fromSnap(DocumentSnapshot snap) {
@@ -75,6 +81,8 @@ class Post {
       tagColor: snapshot['tagColor'],
       checks: snapshot['checks'],
       checkCount: snapshot['checkCount'],
+      postLat: snapshot['postLat'],
+      postLong: snapshot['postLong']
     );
   }
 }

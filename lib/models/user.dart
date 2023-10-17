@@ -7,6 +7,8 @@ class User {
   final String photoUrl;
   final String uid;
   final String location;
+  final double userLat;
+  final double userLong;
 
   const User({
     required this.email,
@@ -15,6 +17,8 @@ class User {
     required this.photoUrl,
     required this.uid,
     required this.location,
+    required this.userLat,
+    required this.userLong,
   });
 
   Map<String, dynamic> toJson() => {
@@ -24,6 +28,8 @@ class User {
         'userAge': userAge,
         'photoUrl': photoUrl,
         'location': location,
+        'userLat': userLat,
+        'userLong': userLong, 
       };
 
   static User fromSnap(DocumentSnapshot snap) {
@@ -36,6 +42,8 @@ class User {
       photoUrl: snapshot['photoUrl'],
       uid: snapshot['uid'],
       location: snapshot['location'],
+      userLat: snapshot['userLat'],
+      userLong: snapshot['userLong'],
     );
   }
 }
